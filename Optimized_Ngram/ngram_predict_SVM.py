@@ -5,6 +5,7 @@ This program will do the following:
 '''
 
 #python ngram_predict_SVM.py -i /Users/babun/Desktop/SemEval2k19/data/test/samp_ip -o /Users/babun/Desktop/SemEval2k19/data/test/samp_op
+#python ngram_predict_SVM.py -i ~/Desktop/semeval2k19/data/test_data/ip_test/articles-validation-bypublisher-20181122.xml -o ~/Desktop/semeval2k19/data/test_data/ip_test_predictions
 
 from lxml import etree
 from lxml import objectify
@@ -32,7 +33,7 @@ root_test_file = test_file.getroot()
 ngram_model = load('ngram_model.joblib')
 
 #Loading training vectors.
-train_vectors = np.load('training_vectors.npy')
+train_vectors = np.load('trainvects.npy')
 
 #Loading training labels.
 train_labels = np.load('model_labels.npy')

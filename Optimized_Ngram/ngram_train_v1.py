@@ -19,10 +19,23 @@ from lxml import objectify
 from nltk.corpus import stopwords
 from tqdm import tqdm
 import sys
+import argparse
 import nltk
 import ast
 import numpy as np
 from joblib import dump
+
+parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
+
+parser.add_argument('-t','--train', metavar='', type=str, help='path to training file')
+parser.add_argument('-t','--train', metavar='', type=str, help='path to training file')
+parser.add_argument('-t','--train', metavar='', type=str, help='path to training file')
+parser.add_argument('-t','--train', metavar='', type=str, help='path to training file')
+args = parser.parse_args()
+'''
+
+
+
 
 stop_words_list = set(stopwords.words('english'))
 
@@ -57,3 +70,4 @@ np.save(sys.argv[14], training_labels)
 np.save('training_vectors', vectors.toarray())
 dump(vectorizer, sys.argv[12]+'.joblib')
 print "\nThe Ngram Model was saved..."
+'''
