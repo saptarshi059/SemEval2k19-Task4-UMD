@@ -1,25 +1,21 @@
-#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 10 > unigram_cutoff10.txt
+#python kfold_ngramv2.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12
 
-#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 5 > unigram_cutoff5.txt
+#python kfold_ngramv2.py --data articles-training-byarticle-20181122.xml --datalabel ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12
 
-#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 2 2 --cutoff 10 > bigram_cutoff10.txt
-
-#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 2 2 --cutoff 5 > bigram_cutoff5.txt
-
-from __future__ import division
+# MLP for the hyperpartisan problem
+import numpy
+from keras.models import Sequential
+from keras import layers
+from keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.text import Tokenizer
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import KFold
 from sklearn.dummy import DummyClassifier
-from sklearn import tree
-from sklearn import svm
-from nltk.corpus import stopwords
 from lxml import objectify
 from lxml import etree
 from tqdm import tqdm
-import numpy as np
+from nltk.corpus import stopwords
 import argparse
+from sklearn.model_selection import KFold
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
@@ -30,6 +26,8 @@ parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only tho
 parser.add_argument('-oh','--onehot' , action='store_true' ,help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
 
 args = parser.parse_args()
+
+stop_words = set(stopwords.words('english'))
 
 def build_corpus(indices):
 	corpus = []
@@ -57,16 +55,6 @@ def build_labels(indices):
 			labels.append(i.attrib['hyperpartisan'])
 	return labels
 
-def calc_acc(predictions):
-	correctly_classified = 0
-	j = 0
-	for i in predictions:
-		if i == test_labels[j]:
-			correctly_classified = correctly_classified + 1
-		j = j + 1
-	acc = (correctly_classified / len(predictions)) * 100
-	return acc
-
 #Creating the xml object/tree
 data_file = objectify.parse(open(args.data))
 data_label_file = objectify.parse(open(args.datalabel))
@@ -86,41 +74,37 @@ print "Reading in the training label file:"
 for row in tqdm(root_data_label_file.getchildren()):
 	data_labels.append(row.attrib['hyperpartisan'])
 
-stop_words = set(stopwords.words('english'))
+dummy_accuracies = []
+nn_accuracies = []
 
 #Classifier Object
 dummy_clf = DummyClassifier(strategy='most_frequent', random_state=0)
-svm = svm.SVC(gamma='auto',kernel='linear')
-knn = KNeighborsClassifier(n_neighbors=2)
-dt = tree.DecisionTreeClassifier()
-gnb = GaussianNB()
-
-dummy_accuracies = []
-svm_accuracy_list = []
-knn_accuracy_list = []
-gnb_accuracy_list = []
-dt_accuracy_list = []
 
 # prepare cross validation
 kfold = KFold(10, True, 1)
 fold_number = 1
 
-for train, test in kfold.split(data):	
-	print 'hi'
+# fix random seed for reproducibility
+seed = 7
+numpy.random.seed(seed)
+
+for train, test in kfold.split(data):
 	print "........... Fold %d ..........." % fold_number
 	fold_number = fold_number + 1
-
-	training_corpus = build_corpus(train)
 	
+	training_corpus = build_corpus(train)
 	train_labels = build_labels(train)
-
 	test_corpus = build_corpus(test)
-
 	test_labels = build_labels(test)
 
 	#Generating dummy accuracies for each fold.
 	dummy_clf.fit(training_corpus, train_labels)
 	dummy_accuracies.append(dummy_clf.score(test_corpus,test_labels) * 100)
+
+	tk = Tokenizer()
+	tk.fit_on_texts(train_labels)
+	train_labels = numpy.array(tk.texts_to_sequences(train_labels))
+	test_labels = numpy.array(tk.texts_to_sequences(test_labels))
 
 	vectorizer = CountVectorizer(ngram_range = args.ngrange , stop_words=stop_words, binary = args.onehot, analyzer = 'word', token_pattern = r'\b[^\W\d]+\b' )
 
@@ -137,60 +121,41 @@ for train, test in kfold.split(data):
 
 	#We have to do this step because the test vectors will have to be transformed on a new TDM i.e. the one which reflects the dropped features.
 	j = 0
-	print "Retraining the vectorizer with the new vocabulary:"
 	for key in vectorizer.vocabulary_.keys():
 		vectorizer.vocabulary_[key] = j
 		j = j + 1
 
 	#Supplying the new vocabulary here.
+	print "Retraining the vectorizer with the new vocabulary:"
 	vectorizer = CountVectorizer(ngram_range = args.ngrange , stop_words=stop_words , vocabulary=vectorizer.vocabulary_ , binary = args.onehot, analyzer = 'word', token_pattern = r'\b[^\W\d]+\b')
-	Trained_Vectors = vectorizer.fit_transform(training_corpus).toarray()
-	
+	train_vectors = vectorizer.fit_transform(training_corpus).toarray()
+
 	print "Features Used in this iteration were:"
 	print vectorizer.vocabulary_.keys()
-	print "\n"
+	print "\n"	
 
 	test_vectors = vectorizer.transform(test_corpus).toarray()
 
-	#Training each Classifier
-	svm_clf = svm.fit(Trained_Vectors,train_labels)
-	knn_clf = knn.fit(Trained_Vectors, train_labels)
-	dt_clf = dt.fit(Trained_Vectors, train_labels)
-	gnb_clf = gnb.fit(Trained_Vectors, train_labels)
-
-	print 'hi'
-
-	#Making Predictions
-	svm_predictions = svm_clf.predict(test_vectors)
-	knn_predictions = knn_clf.predict(test_vectors)
-	dt_predictions = dt_clf.predict(test_vectors)
-	gnb_predictions = gnb_clf.predict(test_vectors)
-
+	input_dim = train_vectors.shape[1]  # Number of features
 	
+	# create the model
+	model = Sequential()
+	model.add(layers.Dense(10, input_dim=input_dim, activation='relu'))
+	model.add(layers.Dense(1, activation='sigmoid'))
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-	svm_accuracy_list.append(calc_acc(svm_predictions))
-	knn_accuracy_list.append(calc_acc(knn_predictions))
-	dt_accuracy_list.append(calc_acc(dt_predictions))
-	gnb_accuracy_list.append(calc_acc(gnb_predictions))
-
+	# Fit the model
+	model.fit(train_vectors, train_labels, validation_data=(test_vectors, test_labels), epochs=100, batch_size=10, verbose=1)
+	
+	# Final evaluation of the model
+	scores = model.evaluate(test_vectors, test_labels, verbose=False)
+	nn_accuracies.append(scores[1]*100)
 
 accuracy_dummy = sum(dummy_accuracies)/len(dummy_accuracies)
-accuracy_svm = sum(svm_accuracy_list)/len(svm_accuracy_list)
-accuracy_knn = sum(knn_accuracy_list)/len(knn_accuracy_list)
-accuracy_dt = sum(dt_accuracy_list)/len(dt_accuracy_list)
-accuracy_gnb = sum(gnb_accuracy_list)/len(gnb_accuracy_list)
+accuracy_nn = sum(nn_accuracies)/len(nn_accuracies)
 
 print "Dummy accuracies from each fold:",dummy_accuracies
 print "Average dummy accuracy =",round(accuracy_dummy,2),"%"
 
-print "SVM accuracies from each fold:",svm_accuracy_list
-print "Average SVM accuracy of the classifier =",round(accuracy_svm,2),"%"
-
-print "KNN accuracies from each fold:",knn_accuracy_list
-print "Average KNN accuracy of the classifier =",round(accuracy_knn,2),"%"
-
-print "DT accuracies from each fold:",dt_accuracy_list
-print "Average DT accuracy of the classifier =",round(accuracy_dt,2),"%"
-
-print "GNB accuracies from each fold:",gnb_accuracy_list
-print "Average GNB accuracy of the classifier =",round(accuracy_gnb,2),"%"
+print "NN accuracies from each fold:",nn_accuracies
+print "Average NN accuracy =",round(accuracy_nn,2),"%"

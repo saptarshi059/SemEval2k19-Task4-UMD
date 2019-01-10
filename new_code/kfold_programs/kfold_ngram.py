@@ -1,6 +1,10 @@
+#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 > unigram_cutoff12.txt ....best performance for LR with 77%!
+
 #python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 10 > unigram_cutoff10.txt
 
 #python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 5 > unigram_cutoff5.txt
+
+#python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 2 2 --cutoff 12 > bigram_cutoff12.txt
 
 #python kfold_ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 2 2 --cutoff 10 > bigram_cutoff10.txt
 
@@ -8,6 +12,7 @@
 
 from __future__ import division
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import KFold
@@ -15,11 +20,13 @@ from sklearn.dummy import DummyClassifier
 from sklearn import tree
 from sklearn import svm
 from nltk.corpus import stopwords
+import matplotlib.pyplot as plt
 from lxml import objectify
 from lxml import etree
 from tqdm import tqdm
 import numpy as np
 import argparse
+import operator
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
@@ -64,8 +71,45 @@ def calc_acc(predictions):
 		if i == test_labels[j]:
 			correctly_classified = correctly_classified + 1
 		j = j + 1
-	acc = (correctly_classified / len(predictions)) * 100
+	acc = (correctly_classified / len(svm_predictions)) * 100
 	return acc
+
+def plot_coefficients(classifier, feature_names, top_features=20):
+	coef = classifier.coef_.ravel()
+	top_positive_coefficients = np.argsort(coef)[-top_features:]
+	top_negative_coefficients = np.argsort(coef)[:top_features]
+	top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+
+	# create plot
+	plt.figure(figsize=(15, 5))
+	colors = ['red' if c < 0 else 'blue' for c in coef[top_coefficients]]
+	plt.bar(np.arange(2 * top_features), coef[top_coefficients], color=colors)
+	feature_names = np.array(feature_names)
+	plt.xticks(np.arange(1, 1 + 2 * top_features), feature_names[top_coefficients], rotation=60, ha='right')
+	#plt.show()
+	plt.savefig('Fold'+str(fold_number)+'.png', bbox_inches='tight')
+
+def features_and_weights(calssifier_name, classifier, feature_names):
+	top_features=len(feature_names)
+	coef = classifier.coef_.ravel()
+	top_positive_coefficients = np.argsort(coef)[-top_features:]
+	top_negative_coefficients = np.argsort(coef)[:top_features]
+	top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+	
+	feature_names = np.array(feature_names)
+	Weights = {}
+	for c in top_coefficients:
+		Weights[feature_names[c]] = coef[c]
+	
+	sorted_Weights = sorted(Weights.items(), key=operator.itemgetter(1), reverse = True)
+
+	f = open(calssifier_name+'_Fold'+str(fold_number)+'_features.txt','w')
+
+	for tup in sorted_Weights:
+		f.write(str(tup))
+		f.write('\n')
+
+	f.close()
 
 #Creating the xml object/tree
 data_file = objectify.parse(open(args.data))
@@ -88,27 +132,27 @@ for row in tqdm(root_data_label_file.getchildren()):
 
 stop_words = set(stopwords.words('english'))
 
+dummy_accuracies = []
+svm_accuracy_list = []
+knn_accuracy_list = []
+gnb_accuracy_list = []
+dt_accuracy_list = []
+lr_accuracy_list = []
+
 #Classifier Object
 dummy_clf = DummyClassifier(strategy='most_frequent', random_state=0)
 svm = svm.SVC(gamma='auto',kernel='linear')
 knn = KNeighborsClassifier(n_neighbors=2)
 dt = tree.DecisionTreeClassifier()
 gnb = GaussianNB()
-
-dummy_accuracies = []
-svm_accuracy_list = []
-knn_accuracy_list = []
-gnb_accuracy_list = []
-dt_accuracy_list = []
+lr = LogisticRegression()
 
 # prepare cross validation
 kfold = KFold(10, True, 1)
 fold_number = 1
 
 for train, test in kfold.split(data):	
-	print 'hi'
 	print "........... Fold %d ..........." % fold_number
-	fold_number = fold_number + 1
 
 	training_corpus = build_corpus(train)
 	
@@ -137,12 +181,12 @@ for train, test in kfold.split(data):
 
 	#We have to do this step because the test vectors will have to be transformed on a new TDM i.e. the one which reflects the dropped features.
 	j = 0
-	print "Retraining the vectorizer with the new vocabulary:"
 	for key in vectorizer.vocabulary_.keys():
 		vectorizer.vocabulary_[key] = j
 		j = j + 1
 
 	#Supplying the new vocabulary here.
+	print "Retraining the vectorizer with the new vocabulary:"
 	vectorizer = CountVectorizer(ngram_range = args.ngrange , stop_words=stop_words , vocabulary=vectorizer.vocabulary_ , binary = args.onehot, analyzer = 'word', token_pattern = r'\b[^\W\d]+\b')
 	Trained_Vectors = vectorizer.fit_transform(training_corpus).toarray()
 	
@@ -157,28 +201,32 @@ for train, test in kfold.split(data):
 	knn_clf = knn.fit(Trained_Vectors, train_labels)
 	dt_clf = dt.fit(Trained_Vectors, train_labels)
 	gnb_clf = gnb.fit(Trained_Vectors, train_labels)
-
-	print 'hi'
+	lr_clf = lr.fit(Trained_Vectors, train_labels)
 
 	#Making Predictions
 	svm_predictions = svm_clf.predict(test_vectors)
 	knn_predictions = knn_clf.predict(test_vectors)
 	dt_predictions = dt_clf.predict(test_vectors)
 	gnb_predictions = gnb_clf.predict(test_vectors)
-
-	
+	lr_predictions = lr_clf.predict(test_vectors)
 
 	svm_accuracy_list.append(calc_acc(svm_predictions))
 	knn_accuracy_list.append(calc_acc(knn_predictions))
 	dt_accuracy_list.append(calc_acc(dt_predictions))
 	gnb_accuracy_list.append(calc_acc(gnb_predictions))
+	lr_accuracy_list.append(calc_acc(lr_predictions))
 
+	#plot_coefficients(svm_clf, vectorizer.get_feature_names())
+	features_and_weights('SVM',svm_clf,vectorizer.get_feature_names())
+	features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
+	fold_number = fold_number + 1
 
 accuracy_dummy = sum(dummy_accuracies)/len(dummy_accuracies)
 accuracy_svm = sum(svm_accuracy_list)/len(svm_accuracy_list)
 accuracy_knn = sum(knn_accuracy_list)/len(knn_accuracy_list)
 accuracy_dt = sum(dt_accuracy_list)/len(dt_accuracy_list)
 accuracy_gnb = sum(gnb_accuracy_list)/len(gnb_accuracy_list)
+accuracy_lr = sum(lr_accuracy_list)/len(lr_accuracy_list)
 
 print "Dummy accuracies from each fold:",dummy_accuracies
 print "Average dummy accuracy =",round(accuracy_dummy,2),"%"
@@ -194,3 +242,6 @@ print "Average DT accuracy of the classifier =",round(accuracy_dt,2),"%"
 
 print "GNB accuracies from each fold:",gnb_accuracy_list
 print "Average GNB accuracy of the classifier =",round(accuracy_gnb,2),"%"
+
+print "LR accuracies from each fold:",lr_accuracy_list
+print "Average LR accuracy of the classifier =",round(accuracy_lr,2),"%"
