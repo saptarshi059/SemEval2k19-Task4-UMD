@@ -35,6 +35,6 @@ The **ENTIRE** list of dependencies which are required to run *all* the programs
 - re
 - Matplotlib (optional)
 
-In order to run the programs in *Final_TIRA_Programs*, one needs to have the **first 9 dependencies** installed.
+In order to run the programs in *Final_TIRA_Programs*, one needs to only have the **first 9 dependencies** installed.
 
 *Code/Project Advisor: Dr. Ted Pedersen*
