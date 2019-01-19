@@ -15,15 +15,15 @@ Each program in this folder is well documented so that a user may have as much a
 The folder named *all_approaches* contains programs for all the approaches we tried for the problem. All of them are fully functional. However, they are not formatted according to the SemEval standards. Running them is fairly simple if one looks at the help menu obtained from the command line using the '-h' flag. These programs were mostly based on a kfold cross-validation technique and were written with the *articles-training-byarticle-20181122.xml* dataset (https://zenodo.org/record/1489920) in mind.
 
 The **ENTIRE** list of dependencies which are required to run *all* the programs are as follows:
-- Python
-- NumPy
-- scikit-learn
-- SciPy
-- Tensorflow
-- Keras
-- tqdm
-- lxml
-- argpars
+- **Python**
+- **NumPy**
+- **scikit-learn**
+- **SciPy**
+- **Tensorflow**
+- **Keras**
+- **tqdm**
+- **lxml**
+- **argpars**
 - Gensim
 - Six
 - smart_open
@@ -33,7 +33,7 @@ The **ENTIRE** list of dependencies which are required to run *all* the programs
 - re
 - Matplotlib (optional)
 
-In order to run the programs in *Final_TIRA_Programs*, one needs to have the **first 9 dependencies** installed.
+In order to run the programs in *Final_TIRA_Programs*, one needs to only have the **first 9 dependencies** installed.
 
 **Update 19th January 2019**
 
