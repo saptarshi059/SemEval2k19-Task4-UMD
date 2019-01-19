@@ -8,13 +8,11 @@ The first few lines of each program are commented out. They are simply the comma
 
 **Update 17th January 2019**
 
-The repository has been cleaned and the only folder which is of importance as far as SemEval is concerned is the *Final_TIRA_Programs*. These programs were designed for use with the *TIRA* system. This folder holds the programs for the two approaches we selected for the competition. 
-	One of the them is a logistic regression classifier trained on a unigram model. Although the program is called *ngram_LR_train* etc., we use only unigrams as features. The name was so given because the program is capable of handling n(>1)gram features.
-	The other is a CNN trained on a unigram/embedding model.
+The repository has been cleaned and the only folder which is of importance as far as SemEval is concerned is the *Final_TIRA_Programs*. These programs were designed for use with the *TIRA* system. This folder holds the programs for the two approaches we selected for the competition. One of the them is a logistic regression classifier trained on a unigram model. Although the program is called *ngram_LR_train* etc., we use only unigrams as features. The name was so given because the program is capable of handling n(>1)gram features. The other is a CNN trained on a unigram/embedding model obtained from the supplied training data.
 
 Each program in this folder is well documented so that a user may have as much as background information as possible regarding the approach/code.
 
-The folder named *all_approaches* contains programs for all the approaches we tried for the problem. All of them are fully functional. However, they are not formatted according to the SemEval standards. Running them is fairly simple if one looks at the help menu obtained from the command line using the '-h' flag. These programs were mostly based on a kfold cross-validation technique and were written with the *articles-training-byarticle-20181122.xml* dataset in mind.
+The folder named *all_approaches* contains programs for all the approaches we tried for the problem. All of them are fully functional. However, they are not formatted according to the SemEval standards. Running them is fairly simple if one looks at the help menu obtained from the command line using the '-h' flag. These programs were mostly based on a kfold cross-validation technique and were written with the *articles-training-byarticle-20181122.xml* dataset (https://zenodo.org/record/1489920) in mind.
 
 The **ENTIRE** list of dependencies which are required to run *all* the programs are as follows:
 - Python
@@ -36,5 +34,9 @@ The **ENTIRE** list of dependencies which are required to run *all* the programs
 - Matplotlib (optional)
 
 In order to run the programs in *Final_TIRA_Programs*, one needs to have the **first 9 dependencies** installed.
+
+**Update 19th January 2019**
+
+Each final approach (previously located in the *Final_TIRA_Programs* folder), now has its own directory. Located within each directory is a *setup.py* program which will install all the dependencies required to run that particular approach. In order to use it, run *python setup.py install*. Thus, the only prerequisite now is having the python compiler installed.
 
 *Code/Project Advisor: Dr. Ted Pedersen*
