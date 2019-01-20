@@ -80,7 +80,7 @@ root_training_file = training_file.getroot()
 root_training_label_file = training_label_file.getroot()
 
 training_corpus = []
-training_labels = []
+train_labels = []
 
 print "Reading in the training corpus:"
 for i in tqdm(root_training_file.getchildren()):
@@ -89,9 +89,9 @@ for i in tqdm(root_training_file.getchildren()):
 print "Reading in the training label file:"
 for row in tqdm(root_training_label_file.getchildren()):
 	if row.attrib['hyperpartisan'] == 'true':
-		training_labels.append(1)
-	else
-		training_labels.append(0)
+		train_labels.append(1)
+	else:
+		train_labels.append(0)
 	
 maxlen = 10000
 
