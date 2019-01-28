@@ -134,4 +134,4 @@ lr_clf = lr.fit(training_vectors, training_labels)
 
 dump(vectorizer, args.tdmname + '.joblib')
 dump(lr_clf, args.lrmname + '.joblib')
-print "The TDM and LR model and the training vectors were saved..."
+print "The TDM and LR model was saved..."

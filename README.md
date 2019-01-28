@@ -1,5 +1,11 @@
 # SemEval2k19-Task4-UMD
 
+**Introduction and Task Description**
+During SemEval 2019, the *Hyperpartisan News Detection* task was hosted. The objective of this task was to determine whether a given news article could be considered as hyperpartisan or not. Hyperpartisan news is kind of *fake news* which is extremely polarized and written with the intent of creating a political divide among readers. Typically such kinds of articles have roots in political issues and it makes sense for them to be so. This is owing to the fact that bias in political news is generally able to incite more commotion than any other kind of news which in turn helps in adding more fuel to the preexisting fire surrounding political parties and leaders. Thus, it is of the essence that such articles be swiftly detected before they find their way to consumers and thus start their destruction.
+
+As far as the task was concerned, each team had to come up with a model to detect such articles in a given dataset, typically in a supervised manner owing to the fact that each article was annotated. The dataset provided was created by the authors of the paper *A Stylometric Inquiry into Hyperpartisan and Fake News* (http://aclweb.org/anthology/P18-1022).
+
+**29th November 2018**
 There are 3 files, the 'generate_vectors.py' and 'generate_sentiment_vectors.py' are used to create unigram/image presence and sentiment vectors respectively. The 'classify.py' is used for training and testing the SVM, Gaussian NB and Decision Tree classifiers.
 
 There are no output files for the last one as the results are displayed directly in the terminal. For the first 2, the results are stored as '.csv' files. In order to run the classification program, the 2 output files from the first 2 programs are manually merged into files called 'train.csv' and 'test.csv'.

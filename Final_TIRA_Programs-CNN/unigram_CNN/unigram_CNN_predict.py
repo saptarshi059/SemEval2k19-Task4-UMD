@@ -8,6 +8,8 @@ python unigram_CNN_predict.py -tf <Path to the folder holding the test file> -o 
 
 Example Usage:
 python unigram_CNN_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/test/samp_ip -o /Users/babun/Desktop/SemEval2k19/data/test/samp_op
+
+python unigram_CNN_predict.py -tf ~/Desktop/semeval2k19/data/test_data/samp_ip -o ~/Desktop/semeval2k19/data/test_data/samp_op
 '''
 
 from keras.preprocessing.sequence import pad_sequences
@@ -51,12 +53,13 @@ for i in root_test_file.getchildren():
 	test_articles_id.append(i.attrib['id'])
 
 #Loading the CNN model.
-model = load_model('myCNN.h5')
+model = load_model('myCNN')
 
 #Loading the Classifier.
-tokenizer = load('mytokenizer.joblib')
+tokenizer = load('mytokenizer')
 
 #Creating the test vectors.
+maxlen = 10000
 test_vectors = tokenizer.texts_to_sequences(test_articles)
 test_vectors = pad_sequences(test_vectors, padding='post', maxlen=maxlen)
 	
