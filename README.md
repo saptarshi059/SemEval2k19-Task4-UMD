@@ -20,7 +20,7 @@ Each program in the first 2 directories is documented/commented such that it exp
 
 **Motivation for each approach**
 
-#### Logistic Regression/Unigram ####
+1. #### Logistic Regression/Unigram ####
 
 **Update 29th November 2018**
 
