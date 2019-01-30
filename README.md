@@ -1,7 +1,12 @@
 # SemEval2k19-Task4-UMD
 
+<<<<<<< HEAD
 ** Code and Project Advisor: Dr. Ted Pedersen **
 ** Code Author: Saptarshi Sengupta **
+=======
+#### Code and Project Advisor: Dr. Ted Pedersen ####
+#### Code Author: Saptarshi Sengupta ####
+>>>>>>> 51bda20d3c0414f7d9be78822334c59a955fe246
 
 **Introduction and Task Description**
 
