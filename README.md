@@ -1,7 +1,7 @@
-#SemEval2k19-Task4-UMD
+# SemEval2k19-Task4-UMD
 
-###Code and Project Advisor: Dr. Ted Pedersen###
-###Code Author: Saptarshi Sengupta###
+### Code and Project Advisor: Dr. Ted Pedersen ###
+### Code Author: Saptarshi Sengupta ###
 
 **Introduction and Task Description**
 
@@ -20,7 +20,7 @@ Each program in the first 2 directories is documented/commented such that it exp
 
 **Motivation for each approach**
 
-####Logistic Regression/Unigram####
+#### Logistic Regression/Unigram ####
 
 **Update 29th November 2018**
 
