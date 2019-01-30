@@ -16,7 +16,7 @@ The repository is organized in the following manner.
 2. The *Final_TIRA_Programs-Logistic Regression* directory contains the programs for our Logistic Regression model.
 3. The *all_approaches* directory contains code for each approach that was attempted for the task.
 
-Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same.
+Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. **Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same as those in final directories.**
 
 ### Motivation for each approach ###
 
