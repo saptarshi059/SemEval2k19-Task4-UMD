@@ -1,4 +1,7 @@
-# SemEval2k19-Task4-UMD
+#SemEval2k19-Task4-UMD
+
+###Code and Project Advisor: Dr. Ted Pedersen###
+###Code Author: Saptarshi Sengupta###
 
 **Introduction and Task Description**
 
@@ -6,9 +9,18 @@ During SemEval 2019, the *Hyperpartisan News Detection* task was hosted. The obj
 
 As far as the task was concerned, each team had to come up with a model to detect such articles in a given dataset, typically in a supervised manner owing to the fact that each article was annotated i.e. as hyperpartisan or not. The dataset was provided by the authors of the paper, *A Stylometric Inquiry into Hyperpartisan and Fake News* (http://aclweb.org/anthology/P18-1022), which was the first real attempt at tackling this issue. The winner of the task was determined on the basis of a team's performance on the *articles-training-byarticle-20181122.xml* dataset [Link provided below] while results on the *articles-training-bypublisher-20181122.xml* dataset were also considered (for the overall task's purpose).
 
+Our team submitted 2 models viz. a logistic regression classifier trained on unigrams having a term frequency greater than 12 and a CNN trained on word embeddings.
+
 The repository is organized in the following manner.
-- The *Final_TIRA_Programs-CNN* directory contains the programs for our CNN model.
-- The *Final_TIRA_Programs-Logistic Regression* directory contains the programs for our Logistic Regression model.
+1. The *Final_TIRA_Programs-CNN* directory contains the programs for our CNN model.
+2. The *Final_TIRA_Programs-Logistic Regression* directory contains the programs for our Logistic Regression model.
+3. The *all_approaches* directory contains code for each approach that was attempted for the task.
+
+Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same.
+
+**Motivation for each approach**
+
+####Logistic Regression/Unigram####
 
 **Update 29th November 2018**
 
@@ -50,5 +62,3 @@ In order to run the programs in *Final_TIRA_Programs*, one needs to only have th
 **Update 19th January 2019**
 
 Each final approach (previously located in the *Final_TIRA_Programs* folder), now has its own directory. Located within each directory is a *setup.py* program which will install all the dependencies required to run that particular approach. In order to use it, run *python setup.py install*. Thus, the only prerequisite now is having the python compiler installed.
-
-*Code/Project Advisor: Dr. Ted Pedersen*
