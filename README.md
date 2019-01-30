@@ -1,9 +1,9 @@
 # SemEval2k19-Task4-UMD
 
-**Code and Project Advisor: Dr. Ted Pedersen**
+**Code and Project Advisor: Dr. Ted Pedersen**</br>
 **Code Author: Saptarshi Sengupta**
 
-**Introduction and Task Description**
+### Introduction and Task Description ###
 
 During SemEval 2019, the *Hyperpartisan News Detection* task was hosted. The objective of this task was to determine whether a given news article could be considered as hyperpartisan or not. Hyperpartisan news is a kind of *fake news* which is extremely polarized and written with the intent of creating political divide among the masses. Typically such kinds of articles have roots in political issues and it makes sense for them to do so. This is owing to the fact that bias in political news is generally able to incite more commotion than any other kind of news which in turn helps in adding more fuel to the preexisting fire surrounding political parties and leaders. Thus, it is of the essence that such articles be swiftly detected before they find their way to consumers and thus start their action.
 
@@ -18,11 +18,11 @@ The repository is organized in the following manner.
 
 Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same.
 
-**Motivation for each approach**
+### Motivation for each approach ###
 
-1. #### Logistic Regression/Unigram ####
+1. **Logistic Regression/Unigram**
 
-**Update 29th November 2018**
+### Update 29th November 2018 ###
 
 There are 3 files, the 'generate_vectors.py' and 'generate_sentiment_vectors.py' are used to create unigram/image presence and sentiment vectors respectively. The 'classify.py' is used for training and testing the SVM, Gaussian NB and Decision Tree classifiers.
 
@@ -30,7 +30,7 @@ There are no output files for the last one as the results are displayed directly
 
 The first few lines of each program are commented out. They are simply the command line arguments I used to run the program. You can change it accordingly to where you have kept your files.
 
-**Update 17th January 2019**
+### Update 17th January 2019 ###
 
 The repository has been cleaned and the only folder which is of importance as far as SemEval is concerned is the *Final_TIRA_Programs*. These programs were designed for use with the *TIRA* system. This folder holds the programs for the two approaches we selected for the competition. One of the them is a logistic regression classifier trained on a unigram model. Although the program is called *ngram_LR_train* etc., we use only unigrams as features. The name was so given because the program is capable of handling n(>1)gram features. The other is a CNN trained on a unigram/embedding model obtained from the supplied training data.
 
@@ -59,6 +59,6 @@ The **ENTIRE** list of dependencies which are required to run *all* the programs
 
 In order to run the programs in *Final_TIRA_Programs*, one needs to only have the **first 9 dependencies** installed.
 
-**Update 19th January 2019**
+### Update 19th January 2019 ###
 
 Each final approach (previously located in the *Final_TIRA_Programs* folder), now has its own directory. Located within each directory is a *setup.py* program which will install all the dependencies required to run that particular approach. In order to use it, run *python setup.py install*. Thus, the only prerequisite now is having the python compiler installed.
