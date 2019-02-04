@@ -1,4 +1,34 @@
-#python sentiment.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml > sentiment.txt
+'''
+Program Name: sentiment.py
+Author: SAPTARSHI SENGUPTA
+Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
+
+Program Details: The sentiment program implements our sentiment analysis model for the task. After splitting the supplied data set into training and testing folds (cross-validation), articles in both get vectorized. A sentiment vector for our model had 5 dimensions, weights for negative, neutral and positive sentiment, compound/overall sentiment score and subjectivity score. The first 4 features were obtained using NLTK's Vader package and the last one was obtained using the TextBlob package. Finally, the training vectors were used to train the classifiers and predictions were made on the test vectors.
+
+Code Usage: In order to use this program -
+				* A user must have the Python programming language compiler installed.
+				
+				* The user should type the following command in either command prompt or linux shell i.e. 
+				  				python sentiment.py -d <path to training data file> -dl <path to training data's label file>
+
+				* An example usage would be of the form: python sentiment.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml
+
+Program Algorithm: The program has the following underlying logic -
+				 
+				//PreProcessing
+	
+				No kind of preprocessing was done on the training data.
+
+				//Main Program Logic
+
+				1. At first, the XML training file is parsed so as to retrieve each article which in turn is stored in memory in a python list. The same takes place for the training labels file.
+
+				2. A 10 fold training-testing split is done on the data.
+
+				3. The training and testing vectors are built for the current fold and each classifier is trained on the training vectors and then tested on the test vectors.
+
+		    	4. Finally, the accuracy of classification is computed for each classifier.
+'''
 from __future__ import division
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -18,8 +48,8 @@ import nltk
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
-parser.add_argument('-t','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
-parser.add_argument('-tl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
+parser.add_argument('-d','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
+parser.add_argument('-dl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
 
 args = parser.parse_args()
 
@@ -63,7 +93,7 @@ def build_vectors(indices):
 			article = ' '.join(e for e in i.itertext()).lower()
 			blob = TextBlob(article)
 			scores = sid.polarity_scores(article)
-			s = scores.values() #Sentiment Score Vector. This vector contains 5 elements resp. - weights of negative, 							neutral, positive sent. and compound/overall sentiment and subjectivity score.
+			s = scores.values() #Sentiment Score Vector. This vector contains 5 elements resp. - weights of negative, neutral, positive sent. and compound/overall sentiment and subjectivity score.
 			s.append(blob.sentiment[1])
 			vectors[j] = s
 		j = j + 1

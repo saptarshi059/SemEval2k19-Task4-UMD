@@ -1,4 +1,41 @@
-#python d2v.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml
+'''
+Program Name: d2v.py
+Author: SAPTARSHI SENGUPTA
+Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
+
+Program Details: The d2v program implements our Doc2Vec model for the task. After splitting the supplied data set into training and testing folds (cross-validation), articles in both get vectorized. Each article in the training corpus was converted into a "Tagged Document" which was used to train the document model. Finally, the training vectors were used to train the document model and predictions were made by it on the "inferred" test vectors i.e. articles which are not in the training corpus but whose representation is learned by the model according to the data on which it has been trained.
+
+Code Usage: In order to use this program -
+				* A user must have the Python programming language compiler installed.
+				
+				* The user should type the following command in either command prompt or linux shell i.e. 
+				  				python d2v.py -d <path to training data file> -dl <path to training data's label file>
+
+				* An example usage would be of the form: python d2v.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml
+
+Settings Used: vector size = 100.
+			   alpha = 0.025.
+			   epochs (iterations for training the model) = 100.
+			   min_count = 5 i.e. Ignore those terms which have a frequency less than this value.
+
+Program Algorithm: The program has the following underlying logic -
+				 
+				//PreProcessing
+	
+				Articles in the training and testing fold were converted to lowercase. Articles in the training corpus was also converted to a "Tagged Document" (explained in point 3 below).
+
+				//Main Program Logic
+
+				1. At first, the XML training file is parsed so as to retrieve each article which in turn is stored in memory in a python list. The same takes place for the training label's file.
+
+				2. A 10 fold training-testing split is done on the data.
+
+				3. The training and testing corpora are built for the current fold. Articles in the training fold (corpus) are associated with their respective 'tags' which in this case is their hyperpartisanship attribute (whether they are hyp. or not) i.e. True/False.
+
+				4. The document model was trained on the training corpus and then tested on the test corpus, by converting each article in the test fold to an 'inferred vector'.
+
+		    	5. Finally, the accuracy of classification is computed for the current fold.
+'''
 from __future__ import division
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from sklearn.model_selection import KFold
@@ -16,8 +53,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
-parser.add_argument('-t','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
-parser.add_argument('-tl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
+parser.add_argument('-d','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
+parser.add_argument('-dl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
 
 args = parser.parse_args()
 
@@ -95,10 +132,9 @@ for train, test in kfold.split(data):
 	    tagged_data.append(TaggedDocument(i.lower(),tags=[train_labels[j]]))
 	    j = j + 1
 
-	#I'll make these command line args
+	#I'll make these command line args later
 	vec_size = 100
 	alpha = 0.025
-	epochs = 50
 
 	model = Doc2Vec(tagged_data, vector_size=vec_size, alpha=alpha, min_alpha=0.00025, min_count=5, dm =1, epochs = 100)
 

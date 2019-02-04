@@ -1,5 +1,5 @@
 '''
-Program Name: ngram_LR_train
+Program Name: ngram_LR_train.py
 Author: SAPTARSHI SENGUPTA
 Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
 
@@ -9,7 +9,7 @@ Code Usage: In order to use this program -
 				* A user must have the Python programming language compiler installed.
 				
 				* The user should type the following command in either command prompt or linux shell i.e. 
-				  				python ngram_LR_train.py -t <path to training data file> -tl <path to training data XML file> -ngr [m,n] -c <cutoff value> -oh (optional) -tdmn <name of the saved TDM model> -lrmn <name of the saved LR model>
+				  				python ngram_LR_train.py -t <path to training data file> -tl <path to training data's label file> -ngr [m,n] -c <cutoff value> -oh (optional) -tdmn <name of the saved TDM model> -lrmn <name of the saved LR model>
 
 			    In the above prompt, 
 

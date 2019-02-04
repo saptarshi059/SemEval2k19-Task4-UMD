@@ -1,4 +1,34 @@
-#python image_presence.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml > imagepresence.txt
+'''
+Program Name: image_presence.py
+Author: SAPTARSHI SENGUPTA
+Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
+
+Program Details: The image_presence program implements our non-text based feature (image presence) model for the task. After splitting the supplied data set into training and testing folds (cross-validation), articles in both get vectorized. Each article was transformed into a one dimension binary vector. What this means is that an article was represented as a 1 if it did contain an image else it was 0. Finally, the training vectors were used to train the classifier and predictions were made on the test vectors.
+
+Code Usage: In order to use this program -
+				* A user must have the Python programming language compiler installed.
+				
+				* The user should type the following command in either command prompt or linux shell i.e. 
+				  				python image_presence.py -d <path to training data file> -dl <path to training data's label file>
+
+				* An example usage would be of the form: python image_presence.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml
+
+Program Algorithm: The program has the following underlying logic -
+				 
+				//PreProcessing
+	
+				No kind of preprocessing was done on the training data.
+
+				//Main Program Logic
+
+				1. At first, the XML training file is parsed so as to retrieve each article which in turn is stored in memory in a python list. The same takes place for the training labels file.
+
+				2. A 10 fold training-testing split is done on the data.
+
+				3. The training and testing vectors are built for the current fold and each classifier is trained on the training vectors and then tested on the test vectors.
+
+		    	4. Finally, the accuracy of classification is computed for each classifier.
+'''
 from __future__ import division
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -16,8 +46,8 @@ import re
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
-parser.add_argument('-t','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
-parser.add_argument('-tl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
+parser.add_argument('-d','--data', metavar='', type=str, help='Path to training (or data file, since we are using KFold cross validation) file (XML).' , required = True)
+parser.add_argument('-dl','--datalabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
 
 args = parser.parse_args()
 

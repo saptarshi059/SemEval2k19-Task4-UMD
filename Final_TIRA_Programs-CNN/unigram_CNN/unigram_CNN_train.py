@@ -1,5 +1,5 @@
 '''
-Program Name: unigram_CNN_train
+Program Name: unigram_CNN_train.py
 Author: SAPTARSHI SENGUPTA
 Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
 
@@ -21,7 +21,7 @@ Code Usage: In order to use this program -
 				* A user must have the Python programming language compiler installed and MUST have keras and Tensorflow installed.
 				
 				* The user should type the following command in either command prompt or linux shell i.e. 
-				  				python unigram_CNN_train.py -t <path to training data file> -tl <path to training data XML file> -mn <Name of the saved CNN model> -tn <Name of the saved tokenizer>
+				  				python unigram_CNN_train.py -t <path to training data file> -tl <path to training data's label file> -mn <Name of the saved CNN model> -tn <Name of the saved tokenizer>
 
 			    In the above prompt, 
 
