@@ -15,7 +15,7 @@ Our team submitted 2 models viz. a logistic regression classifier trained on uni
 The repository is organized in the following manner.
 1. The *Final_TIRA_Programs-CNN* directory contains the programs for our CNN model.
 2. The *Final_TIRA_Programs-Logistic Regression* directory contains the programs for our Logistic Regression model.
-3. The *all_approaches* directory contains code for each approach that was attempted for the task.
+3. The *all_approaches & results* directory contains code for each approach that was attempted for the task.
 
 Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. **Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same as those in the final directories.**
 
@@ -116,3 +116,7 @@ In order to run the programs in *Final_TIRA_Programs*, one needs to only have th
 ### Update 19th January 2019 ###
 
 Each final approach (previously located in the *Final_TIRA_Programs* folder), now has its own directory. Located within each directory is a *setup.py* program which will install all the dependencies required to run that particular approach. In order to use it, run *python setup.py install*. Thus, the only prerequisite now is having the python compiler installed.
+
+### Update 3rd February 2019 ###
+
+Programs in the *all_approaches & results* folder have been updated with comments.
