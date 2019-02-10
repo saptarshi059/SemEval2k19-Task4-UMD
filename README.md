@@ -26,7 +26,7 @@ All of the programs found in this repo have been written with the *articles-trai
 1. The final test data used for the competition (for determining the winner) was similar to the *articles-training-byarticle-20181122.xml* dataset.
 2. The *articles-training-bypublisher-20181122.xml* dataset became quite difficult to parse owing to its large size which in turn became a bottleneck for our programs.
 
-Thus we chose to try our programs on the *byarticle* data only. **Future versions of the code will have the capability of larger sized training data**
+Thus we chose to try our programs on the *byarticle* data only. **Future versions of the code will have the capability of handling larger sized training data**
 
 As we didn't have access to the final test data (which would be released after all the submissions were made), we had to find a way to understand how well our approaches would work on it. Thus, we decided to run each program with a ***10-fold cross-validation*** technique. In this way, we got hints about the final performance of our methods and in turn it helped us select the two models which we would be submitting for the task.
 
