@@ -23,6 +23,8 @@ Code Usage: In order to use this program -
 				
 				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
 
+				python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
+
 Settings Used:  * Unigram features.
 				* Term frequence cutoff 12.
 
@@ -57,7 +59,6 @@ Future Work: There are a few pathways we can follow post this experiment. Firstl
 			 The LR classifier associates weights with the different classes in the training dataset. As we only used the classifier in the default settings, each class (hyperpartisan/mainstream) was set to have the same weight (one). It would be interesting to see whether incorporating such information would have an effect on the classifiers performance.
 			 Finally, as the size of the training and testing data is relatively small, we would like to explore a very rudimentary approach called decision lists which borrows some ideas from the unigram model proposed but would serve as a good baseline comparison model. <I could delete this point if it doesn't fit with the overall text.>
 '''
-
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
@@ -66,8 +67,45 @@ from joblib import dump
 from lxml import etree
 from tqdm import tqdm
 import argparse
+import operator
+import numpy as np
+import eli5
+import matplotlib.pyplot as plt
 
-parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
+def features_and_weights(calssifier_name, classifier, feature_names):
+	top_features=len(feature_names)
+	coef = classifier.coef_.ravel()
+	top_positive_coefficients = np.argsort(coef)[-top_features:]
+	top_negative_coefficients = np.argsort(coef)[:top_features]
+	top_coefficients = np.hstack([top_negative_coefficients, top_positive_coefficients])
+	
+	feature_names = np.array(feature_names)
+	Weights = {}
+	for c in top_coefficients:
+		Weights[feature_names[c]] = coef[c]
+	
+	sorted_Weights = sorted(Weights.items(), key=operator.itemgetter(1), reverse = True)
+
+	f = open(calssifier_name+'_features.txt','w')
+
+	for tup in sorted_Weights:
+		f.write(str(tup))
+		f.write('\n')
+
+	f.close()
+
+
+def print_top10(vectorizer, clf, class_labels):
+    """Prints features with the highest coefficient values, per class"""
+    feature_names = vectorizer.get_feature_names()
+    for i, class_label in enumerate(class_labels):
+        top10 = np.argsort(clf.coef_[i])[-10:]
+        print("%s: %s" % (class_label,
+              " ".join(feature_names[j] for j in top10)))
+
+
+
+parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier for the supplied Training file')
 
 parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).' , required = True)
 parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
@@ -123,7 +161,7 @@ vectorizer = CountVectorizer(ngram_range = args.ngrange , stop_words=stop_words 
 training_vectors = vectorizer.fit_transform(training_data).toarray()
 
 print "Features Used are:"
-print vectorizer.vocabulary_.keys()
+#print vectorizer.vocabulary_.keys()
 print "\n"
 
 #Classifier Object
@@ -135,3 +173,9 @@ lr_clf = lr.fit(training_vectors, training_labels)
 dump(vectorizer, args.tdmname + '.joblib')
 dump(lr_clf, args.lrmname + '.joblib')
 print "The TDM and LR model was saved..."
+
+#features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
+
+print lr_clf.coef_,
+
+#print_top10(vectorizer,lr_clf,lr_clf.classes_)

@@ -8,9 +8,12 @@ python ngram_LR_predict.py -tf <Path to the folder holding the test file> -o <Pa
 
 Example Usage:
 python ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/test/samp_ip -o /Users/babun/Desktop/SemEval2k19/data/test/samp_op
+
+python ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom1/test_data/data -o /Users/babun/Desktop/SemEval2k19/data/custom1/test_data/predictions
 '''
 
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, classification_report
 from lxml import objectify
 from joblib import load
 from lxml import etree
@@ -18,6 +21,7 @@ import argparse
 import errno
 import sys
 import os
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Generate predictions for the supplied test data.')
 
@@ -72,3 +76,22 @@ with open(qualified_name_of_output_file, "w") as f:
 	for prediction in lr_predictions:
 		f.write(test_articles_id[j] + ' ' + prediction + '\n')
 		j = j + 1
+
+'''
+y_true = []
+test_label_file = objectify.parse(open('/Users/babun/Desktop/SemEval2k19/data/custom1/test_data/ground_truth/test_labels.xml'))
+root_test_label_file = test_label_file.getroot()
+
+for row in root_test_label_file.getchildren():
+	y_true.append(row.attrib['hyperpartisan'])
+
+c = confusion_matrix(y_true, lr_predictions)
+
+#print classification_report(y_true,lr_predictions)
+
+print lr_clf.classes_
+
+print c
+'''
+
+print lr_clf.intercept_

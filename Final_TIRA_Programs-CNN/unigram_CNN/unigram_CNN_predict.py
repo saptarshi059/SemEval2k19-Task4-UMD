@@ -9,7 +9,7 @@ python unigram_CNN_predict.py -tf <Path to the folder holding the test file> -o 
 Example Usage:
 python unigram_CNN_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/test/samp_ip -o /Users/babun/Desktop/SemEval2k19/data/test/samp_op
 
-python unigram_CNN_predict.py -tf ~/Desktop/semeval2k19/data/test_data/samp_ip -o ~/Desktop/semeval2k19/data/test_data/samp_op
+python unigram_CNN_predict.py -tf ~/Desktop/semeval2k19/data/train_data/train_byarticle/custom/test_data/data -o ~/Desktop/semeval2k19/data/train_data/train_byarticle/predictions_custom
 '''
 
 from keras.preprocessing.sequence import pad_sequences

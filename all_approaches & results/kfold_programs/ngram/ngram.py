@@ -71,7 +71,7 @@ def calc_acc(predictions):
 		if i == test_labels[j]:
 			correctly_classified = correctly_classified + 1
 		j = j + 1
-	acc = (correctly_classified / len(svm_predictions)) * 100
+	acc = (correctly_classified / len(predictions)) * 100
 	return acc
 
 def plot_coefficients(classifier, feature_names, top_features=20):
@@ -137,6 +137,7 @@ svm_accuracy_list = []
 knn_accuracy_list = []
 gnb_accuracy_list = []
 dt_accuracy_list = []
+
 lr_accuracy_list = []
 
 #Classifier Object
@@ -145,6 +146,7 @@ svm = svm.SVC(gamma='auto',kernel='linear')
 knn = KNeighborsClassifier(n_neighbors=2)
 dt = tree.DecisionTreeClassifier()
 gnb = GaussianNB()
+
 lr = LogisticRegression()
 
 # prepare cross validation
@@ -217,8 +219,8 @@ for train, test in kfold.split(data):
 	lr_accuracy_list.append(calc_acc(lr_predictions))
 
 	#plot_coefficients(svm_clf, vectorizer.get_feature_names())
-	features_and_weights('SVM',svm_clf,vectorizer.get_feature_names())
-	features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
+	#features_and_weights('SVM',svm_clf,vectorizer.get_feature_names())
+	#features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
 	fold_number = fold_number + 1
 
 accuracy_dummy = sum(dummy_accuracies)/len(dummy_accuracies)
