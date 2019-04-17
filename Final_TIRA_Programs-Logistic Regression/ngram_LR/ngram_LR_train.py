@@ -112,8 +112,8 @@ parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to tr
 parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', required = True)
 parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', required = True)
 parser.add_argument('-oh','--onehot' , action='store_true' ,help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
-parser.add_argument('-tdmn','--tdmname', help='Name of the saved TDM model', required=True)
-parser.add_argument('-lrmn','--lrmname', help='Name of the saved LR model', required=True)
+parser.add_argument('-tdmn','--tdmname', metavar='', help='Name of the saved TDM model', required=True)
+parser.add_argument('-lrmn','--lrmname', metavar='', help='Name of the saved LR model', required=True)
 
 args = parser.parse_args()
 
