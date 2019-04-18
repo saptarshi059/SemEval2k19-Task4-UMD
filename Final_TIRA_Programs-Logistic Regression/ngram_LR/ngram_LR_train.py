@@ -69,7 +69,6 @@ from tqdm import tqdm
 import argparse
 import operator
 import numpy as np
-import eli5
 import matplotlib.pyplot as plt
 
 def features_and_weights(calssifier_name, classifier, feature_names):
@@ -95,25 +94,16 @@ def features_and_weights(calssifier_name, classifier, feature_names):
 	f.close()
 
 
-def print_top10(vectorizer, clf, class_labels):
-    """Prints features with the highest coefficient values, per class"""
-    feature_names = vectorizer.get_feature_names()
-    for i, class_label in enumerate(class_labels):
-        top10 = np.argsort(clf.coef_[i])[-10:]
-        print("%s: %s" % (class_label,
-              " ".join(feature_names[j] for j in top10)))
-
-
-
 parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier for the supplied Training file')
 
-parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).' , required = True)
-parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
-parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', required = True)
-parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', required = True)
+parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).', required=True)
+parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required=True)
+parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', default=[1,1])
+parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=1)
 parser.add_argument('-oh','--onehot' , action='store_true' ,help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
-parser.add_argument('-tdmn','--tdmname', metavar='', help='Name of the saved TDM model', required=True)
-parser.add_argument('-lrmn','--lrmname', metavar='', help='Name of the saved LR model', required=True)
+parser.add_argument('-tdmn','--tdmname', metavar='', help='Name of the saved TDM model', default='MyTDM' )
+parser.add_argument('-lrmn','--lrmname', metavar='', help='Name of the saved LR model', default='MyLRM')
+parser.add_argument('-FW','--featandwts', metavar='', help='Save the features and their corresponding weights to the PWD (Y/N)', default='N')
 
 args = parser.parse_args()
 
@@ -174,8 +164,5 @@ dump(vectorizer, args.tdmname + '.joblib')
 dump(lr_clf, args.lrmname + '.joblib')
 print "The TDM and LR model was saved..."
 
-#features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
-
-print lr_clf.coef_,
-
-#print_top10(vectorizer,lr_clf,lr_clf.classes_)
+if args.featandwts.upper() == 'Y':
+	features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
