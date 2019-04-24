@@ -93,17 +93,17 @@ def features_and_weights(calssifier_name, classifier, feature_names):
 
 	f.close()
 
-
 parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier for the supplied Training file')
 
 parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).', required=True)
 parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required=True)
 parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', default=[1,1])
 parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=1)
-parser.add_argument('-oh','--onehot' , action='store_true' ,help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
-parser.add_argument('-tdmn','--tdmname', metavar='', help='Name of the saved TDM model', default='MyTDM' )
-parser.add_argument('-lrmn','--lrmname', metavar='', help='Name of the saved LR model', default='MyLRM')
-parser.add_argument('-FW','--featandwts', metavar='', help='Save the features and their corresponding weights to the PWD (Y/N)', default='N')
+parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
+parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
+parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
+parser.add_argument('-fw','--featwts', metavar='', type=str, help='Save features and their weights (Y/N)', choices=['Y','N'] ,default='N', required=True)
+
 
 args = parser.parse_args()
 
