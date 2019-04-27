@@ -120,3 +120,7 @@ Each final approach (previously located in the *Final_TIRA_Programs* folder), no
 ### Update 3rd February 2019 ###
 
 Programs in the *all_approaches & results* folder have been updated with comments.
+
+### Update April 27 2019 ###
+
+Support for using text files have been added. Ability to see features and their corresponding weights from the Logistic Regression approach has been added. However, in order to use the LR program now, use *COLUMNS=81* followed by the rest of the command line arguments. This is required now because of the way *argparse* works when the number of command line options are many.
