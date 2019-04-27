@@ -21,7 +21,7 @@ Code Usage: In order to use this program -
 
 				* 'oh' specifies whether we want our vectors to be 'one hot encoded' or not. If yes, include this parameter else do not.
 				
-				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
+				* An example usage would be of the form: COLUMNS=81 python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
 
 				python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
 
@@ -68,10 +68,11 @@ from lxml import etree
 from tqdm import tqdm
 import argparse
 import operator
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def features_and_weights(calssifier_name, classifier, feature_names):
+def features_and_weights(calssifier_name, classifier, feature_names,op_file):
 	top_features=len(feature_names)
 	coef = classifier.coef_.ravel()
 	top_positive_coefficients = np.argsort(coef)[-top_features:]
@@ -85,7 +86,7 @@ def features_and_weights(calssifier_name, classifier, feature_names):
 	
 	sorted_Weights = sorted(Weights.items(), key=operator.itemgetter(1), reverse = True)
 
-	f = open(calssifier_name+'_features.txt','w')
+	f = open(calssifier_name+op_file,'w')
 
 	for tup in sorted_Weights:
 		f.write(str(tup))
@@ -95,36 +96,56 @@ def features_and_weights(calssifier_name, classifier, feature_names):
 
 parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier for the supplied Training file')
 
-parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).', required=True)
-parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required=True)
+parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file.', required=True)
+parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels.', required=True)
 parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', default=[1,1])
 parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=1)
 parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
 parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
 parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
-parser.add_argument('-fw','--featwts', metavar='', type=str, help='Save features and their weights (Y/N)', choices=['Y','N'] ,default='N', required=True)
-
+parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','N'] ,default='N')
 
 args = parser.parse_args()
 
-#Creating the xml object/tree
-training_file = objectify.parse(open(args.train))
-training_label_file = objectify.parse(open(args.trainlabel))
+#Check to see whether the file exists or not.
+while True:
+	exists_train_file = os.path.isfile(args.train)
+	exits_train_label_file = os.path.isfile(args.trainlabel)
+	
+	if exists_train_file and exists_train_label_file:
+		#Checking File extension
+		if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
+			#Creating the xml object/tree
+			training_file = objectify.parse(open(args.train))
+			training_label_file = objectify.parse(open(args.trainlabel))
 
-#To access the root element
-root_data_file = training_file.getroot()
-root_data_label_file = training_label_file.getroot()
+			#To access the root element
+			root_data_file = training_file.getroot()
+			root_data_label_file = training_label_file.getroot()
 
-training_data = []
-training_labels = []
+			training_data = []
+			training_labels = []
 
-print "Reading in the training corpus:"
-for i in tqdm(root_data_file.getchildren()):
-	training_data.append(' '.join(e for e in i.itertext()))
+			print "Reading in the training corpus:"
+			for i in tqdm(root_data_file.getchildren()):
+				training_data.append(' '.join(e for e in i.itertext()))
 
-print "Reading in the training label file:"
-for row in tqdm(root_data_label_file.getchildren()):
-	training_labels.append(row.attrib['hyperpartisan'])
+			print "Reading in the training label file:"
+			for row in tqdm(root_data_label_file.getchildren()):
+				training_labels.append(row.attrib['hyperpartisan'])
+			break
+		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
+			training_data = open(args.train,'r').readlines()
+			training_labels = open(args.trainlabel,'r').readlines()
+			break
+		else:
+			print "Provided files extensions do not match. Check again..."
+	elif exists_train_file == False:
+		print "Please provide a valid training file name/location:\n"
+		args.train = raw_input("<")
+	else:
+		print "Please provide a valid training label file name/location:\n"
+		args.trainlabel = raw_input("<")
 
 stop_words = set(stopwords.words('english'))
 
@@ -165,4 +186,15 @@ dump(lr_clf, args.lrmname + '.joblib')
 print "The TDM and LR model was saved..."
 
 if args.featandwts.upper() == 'Y':
-	features_and_weights('LR',lr_clf,vectorizer.get_feature_names())
+	print "Do you wish to name the predictions file? (Y/N)"
+	while True:
+		provide_file = raw_input("<")
+		if provide_file == 'N':
+			features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),'_features.txt')
+			break
+		elif provide_file == 'Y':
+			file_name = raw_input("<")
+			features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),file_name+'.txt')
+			break
+		else:
+			print "Invalid Input.. Please provide valid Input."
