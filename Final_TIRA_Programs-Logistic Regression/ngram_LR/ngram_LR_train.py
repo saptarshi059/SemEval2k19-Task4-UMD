@@ -134,17 +134,28 @@ while True:
 			for row in tqdm(root_data_label_file.getchildren()):
 				training_labels.append(row.attrib['hyperpartisan'])
 			break
+		
 		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
+			print "Reading in the training corpus:"
 			training_data = open(args.train,'r').readlines()
+			training_data = [x for x in training_data if x != '\n'] #Removing Empty Lines
+			training_data = [x.replace('\n','') for x in training_data] #Removing New Line Characters
+
+			print "Reading in the training label file:"
 			training_labels = open(args.trainlabel,'r').readlines()
+			training_labels = [x for x in training_labels if x != '\n'] #Removing Empty Lines
+			training_labels = [x.replace('\n','') for x in training_labels] #Removing New Line Characters			
 			break
+		
 		else:
 			print "Provided files extensions do not match. Check again..."
+	
 	elif exists_train_file == False:
-		print "Please provide a valid training file name/location:\n"
+		print "Please provide a valid training file name\\location:\n"
 		args.train = raw_input("<")
+	
 	else:
-		print "Please provide a valid training label file name/location:\n"
+		print "Please provide a valid training label file name\\location:\n"
 		args.trainlabel = raw_input("<")
 
 stop_words = set(stopwords.words('english'))
