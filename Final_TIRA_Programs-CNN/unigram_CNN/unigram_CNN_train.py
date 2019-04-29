@@ -71,27 +71,59 @@ parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of
 
 args = parser.parse_args()
 
-#Creating the xml object/tree
-training_file = objectify.parse(open(args.train))
-training_label_file = objectify.parse(open(args.trainlabel))
+#Check to see whether the file exists or not.
+while True:
+	exists_train_file = os.path.isfile(args.train)
+	exits_train_label_file = os.path.isfile(args.trainlabel)
+	
+	if exists_train_file and exists_train_label_file:
+		#Checking File extension
+		if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
+			#Creating the xml object/tree
+			training_file = objectify.parse(open(args.train))
+			training_label_file = objectify.parse(open(args.trainlabel))
 
-#To access the root element
-root_training_file = training_file.getroot()
-root_training_label_file = training_label_file.getroot()
+			#To access the root element
+			root_data_file = training_file.getroot()
+			root_data_label_file = training_label_file.getroot()
 
-training_corpus = []
-train_labels = []
+			training_data = []
+			training_labels = []
 
-print "Reading in the training corpus:"
-for i in tqdm(root_training_file.getchildren()):
-	training_corpus.append(' '.join(e for e in i.itertext()))
+			print "Reading in the training corpus:"
+			for i in tqdm(root_data_file.getchildren()):
+				training_data.append(' '.join(e for e in i.itertext()))
 
-print "Reading in the training label file:"
-for row in tqdm(root_training_label_file.getchildren()):
-	if row.attrib['hyperpartisan'] == 'true':
-		train_labels.append(1)
+			print "Reading in the training label file:"
+			for row in tqdm(root_training_label_file.getchildren()):
+				if row.attrib['hyperpartisan'] == 'true':
+					train_labels.append(1)
+				else:
+					training_labels.append(0)
+			break
+		
+		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
+			print "Reading in the training corpus:"
+			training_data = open(args.train,'r').readlines()
+			training_data = [x for x in training_data if x != '\n'] #Removing Empty Lines
+			training_data = [x.replace('\n','') for x in training_data] #Removing New Line Characters
+
+			print "Reading in the training label file:"
+			training_labels = open(args.trainlabel,'r').readlines()
+			training_labels = [x for x in training_labels if x != '\n'] #Removing Empty Lines
+			training_labels = [int(x.replace('\n','')) for x in training_labels] #Removing New Line Characters			
+			break
+		
+		else:
+			print "Provided files extensions do not match. Check again..."
+	
+	elif exists_train_file == False:
+		print "Please provide a valid training file name\\location:\n"
+		args.train = raw_input("<")
+	
 	else:
-		train_labels.append(0)
+		print "Please provide a valid training label file name\\location:\n"
+		args.trainlabel = raw_input("<")
 	
 maxlen = 10000
 
@@ -111,7 +143,7 @@ model.add(layers.Dense(10, activation='relu'))
 model.add(layers.Dense(1, activation='sigmoid'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-history = model.fit(train_vectors, train_labels, epochs=100, verbose=1, batch_size=10)
+history = model.fit(train_vectors, training_labels, epochs=100, verbose=1, batch_size=10)
 
 #Saving the model
 model.save(args.modelname)
