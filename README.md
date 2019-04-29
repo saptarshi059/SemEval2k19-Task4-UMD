@@ -30,6 +30,8 @@ Thus we chose to try our programs on the *byarticle* data only. **Future version
 
 As we didn't have access to the final test data (which would be released after all the submissions were made), we had to find a way to understand how well our approaches would work on it. Thus, we decided to run each program with a ***10-fold cross-validation*** technique. In this way, we got hints about the final performance of our methods and in turn it helped us select the two models which we would be submitting for the task.
 
+## All Programs were written using Python 2.7. Please run them accordingly! ##
+
 ### Motivation for each approach ###
 
 **In order to establish a baseline for each approach, we trained a *majority classifier* on each fold of the training data. This gave us a reasonable metric to evaluate our models.**
@@ -123,4 +125,4 @@ Programs in the *all_approaches & results* folder have been updated with comment
 
 ### Update April 27 2019 ###
 
-Support for using text files have been added. Ability to see features and their corresponding weights from the Logistic Regression approach has been added. However, in order to use the LR program now, use *COLUMNS=81* followed by the rest of the command line arguments. This is required now because of the way *argparse* works when the number of command line options are many.
+Support for using text files have been added. They are to be supplied to the program in the same manner as .xml files. Ability to see features and their corresponding weights from the Logistic Regression approach has been added. However, in order to use the LR program now, use *COLUMNS=81* followed by the rest of the command line arguments. This is required now because of the way *argparse* works when the number of command line options are many.

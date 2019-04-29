@@ -7,5 +7,5 @@ setup(
    author='Saptarshi Sengupta',
    author_email='sengu059@d.umn.edu',
    packages=['ngram_LR'],
-   install_requires=['argparse', 'joblib', 'lxml', 'nltk', 'tqdm', 'sklearn', 'matplotlib'],
+   install_requires=['joblib', 'lxml', 'nltk', 'tqdm', 'sklearn', 'matplotlib==2.2.3'],
 )
