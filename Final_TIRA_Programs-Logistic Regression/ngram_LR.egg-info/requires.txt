@@ -1,6 +1,0 @@
-joblib
-lxml
-nltk
-tqdm
-sklearn
-matplotlib==2.2.3
