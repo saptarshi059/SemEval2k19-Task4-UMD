@@ -21,7 +21,7 @@ Code Usage: In order to use this program -
 
 				* 'oh' specifies whether we want our vectors to be 'one hot encoded' or not. If yes, include this parameter else do not.
 				
-				* An example usage would be of the form: COLUMNS=81 python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
+				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
 
 				python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
 
@@ -104,6 +104,9 @@ parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not
 parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
 parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
 parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','N'] ,default='N')
+
+#Setting the 'columns' environment variable to a value greater than 80 (default) in order to avoid assertion errors for argparse for long input string.
+os.environ["COLUMNS"] = "81"
 
 args = parser.parse_args()
 
