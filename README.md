@@ -138,3 +138,5 @@ Support for using text files have been added. They are to be supplied to the pro
 Once you are done with the enironment, enter *deactivate* in the prompt to exit.
 
 There is no need to set the *COLUMNS* environment variable now as that has been taken care of within the code.
+
+License (GPLv3) to the code has been added.
