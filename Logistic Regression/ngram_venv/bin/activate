@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Final_TIRA_Programs-Logistic Regression/ngram_LR/ngram_venv"
+VIRTUAL_ENV="/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic Regression/ngram_venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

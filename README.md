@@ -129,10 +129,10 @@ Support for using text files have been added. They are to be supplied to the pro
 
 ### Update May 15 2019 ###
 
-**Main programs have been updated to work with Python 3**. Setup scripts have been removed and have been replaced with virtual environments. Please run the programs in *Logistic Regression* and *CNN* by using their respective virtual environments. Logistic Regression's virtual environment has already been setup with the required dependencies. CNN's environment requires an installation of dependencies (since my OS didn't allow me to install tensorflow!). In order to use the programs now, enter the following commands:
+**Main programs have been updated to work with Python 3**. Setup scripts have been removed and have been replaced with virtual environments. Please run the programs in *Logistic Regression* and *CNN* by using their respective virtual environments. In order to use the programs now, enter the following commands:
 
 - source /path/to/virtual/environment/bin/activate
-- pip install -r requirements.txt (only for CNN)
+- pip install -r requirements.txt
 - run programs as usual.
 
 Once you are done with the enironment, enter *deactivate* in the prompt to exit.

@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Final_TIRA_Programs-Logistic Regression/ngram_LR/ngram_venv"
+set -gx VIRTUAL_ENV "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic Regression/ngram_venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
