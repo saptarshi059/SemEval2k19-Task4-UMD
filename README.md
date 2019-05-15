@@ -126,3 +126,15 @@ Programs in the *all_approaches & results* folder have been updated with comment
 ### Update April 27 2019 ###
 
 Support for using text files have been added. They are to be supplied to the program in the same manner as .xml files. Ability to see features and their corresponding weights from the Logistic Regression approach has been added. However, in order to use the LR program now, use *COLUMNS=81* followed by the rest of the command line arguments. This is required now because of the way *argparse* works when the number of command line options are many.
+
+### Update May 15 2019 ###
+
+**Main programs have been updated to work with Python 3**. Setup scripts have been removed and have been replaced with virtual environments. Please run the programs in *Logistic Regression* and *CNN* by using their respective virtual environments. Logistic Regression's virtual environment has already been setup with the required dependencies. CNN's environment requires an installation of dependencies (since my OS didn't allow me to install tensorflow!). In order to use the programs now, enter the following commands:
+
+- source /path/to/virtual/environment/bin/activate
+- pip install -r requirements.txt (only for CNN)
+- run programs as usual.
+
+Once you are done with the enironment, enter *deactivate* in the prompt to exit.
+
+There is no need to set the *COLUMNS* environment variable now as that has been taken care of within the code.
