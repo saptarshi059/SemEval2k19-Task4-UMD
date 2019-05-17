@@ -1,0 +1,10 @@
+argparse
+tqdm
+lxml
+joblib
+keras
+tensorflow
+scikit-learn
+nltk
+matplotlib
+numpy

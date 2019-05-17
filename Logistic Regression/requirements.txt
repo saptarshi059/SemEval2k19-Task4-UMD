@@ -1,7 +1,0 @@
-scikit-learn
-nltk
-tqdm
-numpy
-matplotlib
-lxml
-joblib

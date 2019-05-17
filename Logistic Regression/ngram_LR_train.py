@@ -186,7 +186,7 @@ vectorizer = CountVectorizer(ngram_range = args.ngrange , stop_words=stop_words 
 training_vectors = vectorizer.fit_transform(training_data).toarray()
 
 print("Features Used are:")
-#print vectorizer.vocabulary_.keys()
+print(vectorizer.vocabulary_.keys())
 print("\n")
 
 #Classifier Object
