@@ -140,3 +140,12 @@ Once you are done with the enironment, enter *deactivate* in the prompt to exit.
 There is no need to set the *COLUMNS* environment variable now as that has been taken care of within the code.
 
 License (GPLv3) to the code has been added.
+
+### Update May 17 2019 ###
+
+Provided virtual environments have been removed due to portability issues. Now, in order to execute the programs, one needs to create their own virtual environment. The steps are as follows:
+
+- virtualenv -p python3 [environment_name]
+- source /path/to/virtual/environment/bin/activate (or activate.csh depending on how your system works)
+- pip install -r requirements.txt
+- Execute programs as usual and exit virtual environment with deactivate.

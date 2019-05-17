@@ -66,15 +66,15 @@ parser = argparse.ArgumentParser(description='Train and save a CNN model on the 
 
 parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).' , required = True)
 parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
-parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', required = True)
-parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer', required = True)
+parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', default='myCNN')
+parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer',default='mytokenizer')
 
 args = parser.parse_args()
 
 #Check to see whether the file exists or not.
 while True:
 	exists_train_file = os.path.isfile(args.train)
-	exits_train_label_file = os.path.isfile(args.trainlabel)
+	exists_train_label_file = os.path.isfile(args.trainlabel)
 	
 	if exists_train_file and exists_train_label_file:
 		#Checking File extension

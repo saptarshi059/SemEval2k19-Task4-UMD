@@ -23,7 +23,7 @@ Code Usage: In order to use this program -
 				
 				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
 
-				python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
+				python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
 
 Settings Used:  * Unigram features.
 				* Term frequence cutoff 12.
@@ -99,7 +99,7 @@ parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier
 parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file.', required=True)
 parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels.', required=True)
 parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', default=[1,1])
-parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=1)
+parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=12)
 parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
 parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
 parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
@@ -113,7 +113,7 @@ args = parser.parse_args()
 #Check to see whether the file exists or not.
 while True:
 	exists_train_file = os.path.isfile(args.train)
-	exits_train_label_file = os.path.isfile(args.trainlabel)
+	exists_train_label_file = os.path.isfile(args.trainlabel)
 	
 	if exists_train_file and exists_train_label_file:
 		#Checking File extension
@@ -141,15 +141,11 @@ while True:
 		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 			print("Reading in the training corpus:")
 			training_data = open(args.train,'r').readlines()
-			training_data = [x for x in training_data if x != '\n'] #Removing Empty Lines
-			training_data = [x.replace('\n','') for x in training_data] #Removing New Line Characters
 
 			print("Reading in the training label file:")
 			training_labels = open(args.trainlabel,'r').readlines()
-			training_labels = [x for x in training_labels if x != '\n'] #Removing Empty Lines
-			training_labels = [x.replace('\n','') for x in training_labels] #Removing New Line Characters			
 			break
-		
+
 		else:
 			print("Provided files extensions do not match. Check again...")
 	
