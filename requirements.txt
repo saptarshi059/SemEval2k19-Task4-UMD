@@ -7,4 +7,8 @@ tensorflow
 scikit-learn
 nltk
 matplotlib
+<<<<<<< HEAD
 numpy
+=======
+numpy
+>>>>>>> 7e229ee0d9ac655aa2c7fe89e702d02eba028c1f
