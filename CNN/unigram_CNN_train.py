@@ -61,69 +61,61 @@ from joblib import dump
 from lxml import etree
 from tqdm import tqdm
 import argparse
+import os
 
 parser = argparse.ArgumentParser(description='Train and save a CNN model on the supplied Training data')
 
 parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).' , required = True)
 parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
 parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', default='myCNN')
-parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer',default='mytokenizer')
+parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer', default='mytokenizer')
 
 args = parser.parse_args()
 
 #Check to see whether the file exists or not.
-while True:
-	exists_train_file = os.path.isfile(args.train)
-	exists_train_label_file = os.path.isfile(args.trainlabel)
+exists_train_file = os.path.isfile(args.train)
+exists_train_label_file = os.path.isfile(args.trainlabel)
+
+if exists_train_file and exists_train_label_file:
+	#Checking File extension
+	if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
+		#Creating the xml object/tree
+		training_file = objectify.parse(open(args.train))
+		training_label_file = objectify.parse(open(args.trainlabel))
+
+		#To access the root element
+		root_data_file = training_file.getroot()
+		root_data_label_file = training_label_file.getroot()
+
+		training_data = []
+		training_labels = []
+
+		print("Reading in the training corpus:")
+		for i in tqdm(root_data_file.getchildren()):
+			training_data.append(' '.join(e for e in i.itertext()))
+
+		print("Reading in the training label file:")
+		for row in tqdm(root_data_label_file.getchildren()):
+			training_labels.append(row.attrib['hyperpartisan'])
 	
-	if exists_train_file and exists_train_label_file:
-		#Checking File extension
-		if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
-			#Creating the xml object/tree
-			training_file = objectify.parse(open(args.train))
-			training_label_file = objectify.parse(open(args.trainlabel))
+	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
+		print("Reading in the training corpus:")
+		training_data = open(args.train,'r').readlines()
 
-			#To access the root element
-			root_data_file = training_file.getroot()
-			root_data_label_file = training_label_file.getroot()
+		print("Reading in the training label file:")
+		training_labels = open(args.trainlabel,'r').readlines()
 
-			training_data = []
-			training_labels = []
-
-			print("Reading in the training corpus:")
-			for i in tqdm(root_data_file.getchildren()):
-				training_data.append(' '.join(e for e in i.itertext()))
-
-			print("Reading in the training label file:")
-			for row in tqdm(root_training_label_file.getchildren()):
-				if row.attrib['hyperpartisan'] == 'true':
-					train_labels.append(1)
-				else:
-					training_labels.append(0)
-			break
-		
-		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
-			print("Reading in the training corpus:")
-			training_data = open(args.train,'r').readlines()
-			training_data = [x for x in training_data if x != '\n'] #Removing Empty Lines
-			training_data = [x.replace('\n','') for x in training_data] #Removing New Line Characters
-
-			print("Reading in the training label file:")
-			training_labels = open(args.trainlabel,'r').readlines()
-			training_labels = [x for x in training_labels if x != '\n'] #Removing Empty Lines
-			training_labels = [int(x.replace('\n','')) for x in training_labels] #Removing New Line Characters			
-			break
-		
-		else:
-			print("Provided files extensions do not match. Check again...")
-	
-	elif exists_train_file == False:
-		print("Please provide a valid training file name location:\n")
-		args.train = input("<")
-	
 	else:
-		print("Please provide a valid training label file name location:\n")
-		args.trainlabel = input("<")
+		print("Provided files extensions do not match. Program is now exiting...")
+		exit()
+
+elif exists_train_file == False:
+	print("The training file does not exist! Program is now exiting...\n")
+	exit()
+
+else:
+	print("The test file does not exist! Program is now exiting...\n")
+	exit()
 
 maxlen = 10000
 

@@ -8,3 +8,4 @@ scikit-learn
 nltk
 matplotlib
 numpy
+tkinter

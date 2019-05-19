@@ -103,7 +103,7 @@ parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only tho
 parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
 parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
 parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
-parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','N'] ,default='N')
+parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','N'], default='N')
 
 #Setting the 'columns' environment variable to a value greater than 80 (default) in order to avoid assertion errors for argparse for long input string.
 os.environ["COLUMNS"] = "81"
@@ -111,51 +111,49 @@ os.environ["COLUMNS"] = "81"
 args = parser.parse_args()
 
 #Check to see whether the file exists or not.
-while True:
-	exists_train_file = os.path.isfile(args.train)
-	exists_train_label_file = os.path.isfile(args.trainlabel)
+exists_train_file = os.path.isfile(args.train)
+exists_train_label_file = os.path.isfile(args.trainlabel)
+
+if exists_train_file and exists_train_label_file:
+	#Checking File extension
+	if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
+		#Creating the xml object/tree
+		training_file = objectify.parse(open(args.train))
+		training_label_file = objectify.parse(open(args.trainlabel))
+
+		#To access the root element
+		root_data_file = training_file.getroot()
+		root_data_label_file = training_label_file.getroot()
+
+		training_data = []
+		training_labels = []
+
+		print("Reading in the training corpus:")
+		for i in tqdm(root_data_file.getchildren()):
+			training_data.append(' '.join(e for e in i.itertext()))
+
+		print("Reading in the training label file:")
+		for row in tqdm(root_data_label_file.getchildren()):
+			training_labels.append(row.attrib['hyperpartisan'])
 	
-	if exists_train_file and exists_train_label_file:
-		#Checking File extension
-		if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
-			#Creating the xml object/tree
-			training_file = objectify.parse(open(args.train))
-			training_label_file = objectify.parse(open(args.trainlabel))
+	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
+		print("Reading in the training corpus:")
+		training_data = open(args.train,'r').readlines()
 
-			#To access the root element
-			root_data_file = training_file.getroot()
-			root_data_label_file = training_label_file.getroot()
+		print("Reading in the training label file:")
+		training_labels = open(args.trainlabel,'r').readlines()
 
-			training_data = []
-			training_labels = []
-
-			print("Reading in the training corpus:")
-			for i in tqdm(root_data_file.getchildren()):
-				training_data.append(' '.join(e for e in i.itertext()))
-
-			print("Reading in the training label file:")
-			for row in tqdm(root_data_label_file.getchildren()):
-				training_labels.append(row.attrib['hyperpartisan'])
-			break
-		
-		elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
-			print("Reading in the training corpus:")
-			training_data = open(args.train,'r').readlines()
-
-			print("Reading in the training label file:")
-			training_labels = open(args.trainlabel,'r').readlines()
-			break
-
-		else:
-			print("Provided files extensions do not match. Check again...")
-	
-	elif exists_train_file == False:
-		print("Please provide a valid training file name location:\n")
-		args.train = input("<")
-	
 	else:
-		print("Please provide a valid training label file name location:\n")
-		args.trainlabel = input("<")
+		print("Provided files extensions do not match. Program is now exiting...")
+		exit()
+
+elif exists_train_file == False:
+	print("The training file does not exist! Program is now exiting...\n")
+	exit()
+
+else:
+	print("The test file does not exist! Program is now exiting...\n")
+	exit()
 
 stop_words = set(stopwords.words('english'))
 
@@ -197,14 +195,11 @@ print("The TDM and LR model was saved...")
 
 if args.featandwts.upper() == 'Y':
 	print("Do you wish to name the predictions file? (Y/N)")
-	while True:
-		provide_file = input("<")
-		if provide_file == 'N':
-			features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),'_features.txt')
-			break
-		elif provide_file == 'Y':
-			file_name = input("<")
-			features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),file_name+'.txt')
-			break
-		else:
-			print("Invalid Input.. Please provide valid Input.\n")
+	provide_file = input("<")
+	if provide_file == 'N':
+		features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),'_features.txt')
+	elif provide_file == 'Y':
+		file_name = input("<")
+		features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),file_name+'.txt')
+	else:
+		print("Invalid Input.. Please provide valid Input.\n")
