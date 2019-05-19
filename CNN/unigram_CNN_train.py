@@ -120,9 +120,9 @@ else:
 maxlen = 10000
 
 tokenizer = Tokenizer(num_words=None)
-tokenizer.fit_on_texts(training_corpus)
+tokenizer.fit_on_texts(training_data)
 vocab_size = len(tokenizer.word_index) + 1  # Adding 1 because of reserved 0 index
-train_vectors = tokenizer.texts_to_sequences(training_corpus)
+train_vectors = tokenizer.texts_to_sequences(training_data)
 train_vectors = pad_sequences(train_vectors, padding='post', maxlen=maxlen)
 
 embedding_dim = 100
