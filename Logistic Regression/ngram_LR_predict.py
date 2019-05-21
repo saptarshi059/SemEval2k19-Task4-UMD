@@ -55,6 +55,10 @@ for filename in os.listdir(input_file_path):
 		fullname = os.path.join(input_file_path,filename)
 		test_articles = open(fullname,'r').readlines()
 
+	else:
+		print("Invalid File Extension. Program is now exiting...")
+		exit()
+
 #Loading the TDM model.
 ngram_model = load(args.tdmname)
 
@@ -78,6 +82,11 @@ if not os.path.exists(os.path.dirname(qualified_name_of_output_file)):
 #Writing predictions to the output file in the output directory.
 with open(qualified_name_of_output_file, "w") as f:
 	j = 0 
-	for prediction in lr_predictions:
-		f.write(test_articles_id[j] + ' ' + prediction + '\n')
-		j = j + 1
+	if filename.endswith('.xml'):
+		for prediction in lr_predictions:
+			f.write(test_articles_id[j] + ' ' + prediction + '\n')
+			j = j + 1
+	else:
+		for prediction in lr_predictions:
+			f.write(prediction + '\n')
+			j = j + 1

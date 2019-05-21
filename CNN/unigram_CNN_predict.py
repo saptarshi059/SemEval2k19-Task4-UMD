@@ -58,6 +58,10 @@ for filename in os.listdir(input_file_path):
 		fullname = os.path.join(input_file_path,filename)
 		test_articles = open(fullname,'r').readlines()
 
+	else:
+		print("Invalid File Extension. Program is now exiting...")
+		exit()
+
 #Loading the CNN model.
 model = load_model(args.modelname)
 
@@ -83,9 +87,17 @@ if not os.path.exists(os.path.dirname(qualified_name_of_output_file)):
 #Writing predictions to the output file in the output directory.
 with open(qualified_name_of_output_file, "w") as f:
 	j = 0 
-	for prediction in CNN_predictions:
-		if prediction[0] == 0:
-			f.write(test_articles_id[j] + ' ' + 'false' + '\n')
-		else:
-			f.write(test_articles_id[j] + ' ' + 'true' + '\n')
-		j = j + 1
+	if filename.endswith('.xml'):
+		for prediction in CNN_predictions:
+			if prediction[0] == 0:
+				f.write(test_articles_id[j] + ' ' + 'false' + '\n')
+			else:
+				f.write(test_articles_id[j] + ' ' + 'true' + '\n')
+			j = j + 1
+	else:
+		for prediction in CNN_predictions:
+			if prediction[0] == 0:
+				f.write('false' + '\n')
+			else:
+				f.write('true' + '\n')
+			j = j + 1
