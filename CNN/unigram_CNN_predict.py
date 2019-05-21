@@ -29,6 +29,8 @@ parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vec
 
 parser.add_argument('-tf','--testfile', metavar='', type=str, help='Path to the test file (XML).' , required = True)
 parser.add_argument('-o','--outputpath', metavar='', type=str, help='Path to which the predictions file will be written.', required = True)
+parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', default='myCNN')
+parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer', default='mytokenizer')
 
 args = parser.parse_args()
 
@@ -43,20 +45,24 @@ for filename in os.listdir(input_file_path):
 		fullname = os.path.join(input_file_path,filename)
 		test_file = objectify.parse(fullname)
 
-root_test_file = test_file.getroot()
+	root_test_file = test_file.getroot()
 
-test_articles = []
-test_articles_id = []
+	test_articles = []
+	test_articles_id = []
 
-for i in root_test_file.getchildren():
-	test_articles.append(' '.join(e for e in i.itertext()))
-	test_articles_id.append(i.attrib['id'])
+	for i in root_test_file.getchildren():
+		test_articles.append(' '.join(e for e in i.itertext()))
+		test_articles_id.append(i.attrib['id'])
+
+	elif filename.endswith('.txt'):
+		fullname = os.path.join(input_file_path,filename)
+		test_articles = open(fullname,'r').readlines()
 
 #Loading the CNN model.
-model = load_model('myCNN')
+model = load_model(args.modelname)
 
 #Loading the Classifier.
-tokenizer = load('mytokenizer')
+tokenizer = load(args.tokenizername)
 
 #Creating the test vectors.
 maxlen = 10000

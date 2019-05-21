@@ -96,8 +96,11 @@ if exists_train_file and exists_train_label_file:
 
 		print("Reading in the training label file:")
 		for row in tqdm(root_data_label_file.getchildren()):
-			training_labels.append(row.attrib['hyperpartisan'])
-	
+			if row.attrib['hyperpartisan'] == 'true':
+				training_labels.append(1)
+			else:
+				training_labels.append(0)
+
 	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 		print("Reading in the training corpus:")
 		training_data = open(args.train,'r').readlines()
