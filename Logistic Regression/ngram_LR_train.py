@@ -139,7 +139,7 @@ if exists_train_file and exists_train_label_file:
 	
 	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 		print("Reading in the training corpus:")
-		training_data = open(args.train,'r').readlines()
+		training_data = open(args.train,'r', encoding="utf-8").readlines()
 
 		print("Reading in the training label file:")
 		training_labels = open(args.trainlabel,'r').readlines()

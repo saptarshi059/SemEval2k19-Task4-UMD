@@ -56,7 +56,7 @@ for filename in os.listdir(input_file_path):
 
 	elif filename.endswith('.txt'):
 		fullname = os.path.join(input_file_path,filename)
-		test_articles = open(fullname,'r').readlines()
+		test_articles = open(fullname,'r', encoding="utf-8").readlines()
 
 	else:
 		print("Invalid File Extension. Program is now exiting...")
