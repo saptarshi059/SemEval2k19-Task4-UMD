@@ -45,14 +45,14 @@ for filename in os.listdir(input_file_path):
 		fullname = os.path.join(input_file_path,filename)
 		test_file = objectify.parse(fullname)
 
-	root_test_file = test_file.getroot()
+		root_test_file = test_file.getroot()
 
-	test_articles = []
-	test_articles_id = []
+		test_articles = []
+		test_articles_id = []
 
-	for i in root_test_file.getchildren():
-		test_articles.append(' '.join(e for e in i.itertext()))
-		test_articles_id.append(i.attrib['id'])
+		for i in root_test_file.getchildren():
+			test_articles.append(' '.join(e for e in i.itertext()))
+			test_articles_id.append(i.attrib['id'])
 
 	elif filename.endswith('.txt'):
 		fullname = os.path.join(input_file_path,filename)

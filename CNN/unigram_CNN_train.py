@@ -80,7 +80,7 @@ if exists_train_file and exists_train_label_file:
 	#Checking File extension
 	if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
 		#Creating the xml object/tree
-		training_file = objectify.parse(open(args.train))
+		training_file = objectify.parse(open(args.train,encoding="utf-8"))
 		training_label_file = objectify.parse(open(args.trainlabel))
 
 		#To access the root element

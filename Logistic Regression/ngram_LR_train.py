@@ -71,6 +71,7 @@ import operator
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import nltk
 
 def features_and_weights(calssifier_name, classifier, feature_names,op_file):
 	top_features=len(feature_names)
@@ -86,7 +87,7 @@ def features_and_weights(calssifier_name, classifier, feature_names,op_file):
 	
 	sorted_Weights = sorted(list(Weights.items()), key=operator.itemgetter(1), reverse = True)
 
-	f = open(calssifier_name+op_file,'w')
+	f = open(calssifier_name+op_file,'w',encoding="utf-8")
 
 	for tup in sorted_Weights:
 		f.write(str(tup))
@@ -103,7 +104,7 @@ parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only tho
 parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
 parser.add_argument('-tdmn','--tdmname', metavar='', type=str , help='Name of the saved TDM model', default='MyTDM' )
 parser.add_argument('-lrmn','--lrmname', metavar='', type=str , help='Name of the saved LR model', default='MyLRM')
-parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','N'], default='N')
+parser.add_argument('-fw','--featandwts', metavar='', type=str, help='Save features and their weights? (Y/N)', choices=['Y','y','N','n'], default='N')
 
 #Setting the 'columns' environment variable to a value greater than 80 (default) in order to avoid assertion errors for argparse for long input string.
 os.environ["COLUMNS"] = "81"
@@ -118,7 +119,7 @@ if exists_train_file and exists_train_label_file:
 	#Checking File extension
 	if args.train.endswith('.xml') and args.trainlabel.endswith('.xml'):
 		#Creating the xml object/tree
-		training_file = objectify.parse(open(args.train))
+		training_file = objectify.parse(open(args.train, encoding="utf-8"))
 		training_label_file = objectify.parse(open(args.trainlabel))
 
 		#To access the root element
@@ -154,6 +155,12 @@ elif exists_train_file == False:
 else:
 	print("The test file does not exist! Program is now exiting...\n")
 	exit()
+
+#If the user doesn't have the stopwords corpora, it will be downloaded.
+try:
+	nltk.data.find(os.path.join("corpora","stopwords"))
+except LookupError:
+	nltk.download("stopwords")
 
 stop_words = set(stopwords.words('english'))
 
@@ -196,10 +203,11 @@ print("The TDM and LR model was saved...")
 if args.featandwts.upper() == 'Y':
 	print("Do you wish to name the predictions file? (Y/N)")
 	provide_file = input("<")
-	if provide_file == 'N':
+	if provide_file.upper() == 'N':
 		features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),'_features.txt')
-	elif provide_file == 'Y':
+	elif provide_file.upper() == 'Y':
+		print("Enter File Name:")
 		file_name = input("<")
-		features_and_weights('LR',lr_clf,vectorizer.get_feature_names(),file_name+'.txt')
+		features_and_weights('',lr_clf,vectorizer.get_feature_names(),file_name+'.txt')
 	else:
 		print("Invalid Input.. Please provide valid Input.\n")

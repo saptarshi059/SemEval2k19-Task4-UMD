@@ -60,10 +60,10 @@ for filename in os.listdir(input_file_path):
 		exit()
 
 #Loading the TDM model.
-ngram_model = load(args.tdmname)
+ngram_model = load(args.tdmname+".joblib")
 
 #Loading the Classifier.
-lr_clf = load(args.lrmname)
+lr_clf = load(args.lrmname+".joblib")
 
 #Creating the test vectors.
 test_vectors = ngram_model.transform(test_articles).toarray()
