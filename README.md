@@ -131,7 +131,7 @@ Support for using text files have been added. They are to be supplied to the pro
 
 **Main programs have been updated to work with Python 3**. Setup scripts have been removed and have been replaced with virtual environments. Please run the programs in *Logistic Regression* and *CNN* by using their respective virtual environments. In order to use the programs now, enter the following commands:
 
-- source /path/to/virtual/environment/bin/activate
+- source \path\to\virtual\environment\bin\activate
 - pip install -r requirements.txt
 - run programs as usual.
 
@@ -146,8 +146,8 @@ License (GPLv3) to the code has been added.
 Provided virtual environments have been removed due to portability issues. Now, in order to execute the programs, one needs to create their own virtual environment. The steps are as follows:
 
 - virtualenv -p python3 [environment_name] \(for unix based systems) || virtualenv [environment_name] \(for windows)
-- source /path/to/virtual/environment/bin/activate (or activate.csh depending on how your system works) \(for unix based systems) || /path/to/virtual/environment/Scripts/activate \(for windows)
+- source \path\to\virtual\environment\bin\activate (or activate.csh depending on how your system works) \(for unix based systems) ||\path\to\virtual\environment\Scripts\activate \(for windows)
 - pip install -r requirements.txt
 - Execute programs as usual and exit virtual environment with deactivate.
 
-**Please make sure you are using Python 3.6.x in order for tensorflow to work**
+**Please make sure you are using Python 3.6.x in order for tensorflow to work!**
