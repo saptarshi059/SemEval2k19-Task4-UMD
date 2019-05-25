@@ -106,7 +106,13 @@ if exists_train_file and exists_train_label_file:
 		training_data = open(args.train,'r', encoding="utf-8").readlines()
 
 		print("Reading in the training label file:")
-		training_labels = open(args.trainlabel,'r').readlines()
+		training_labels_file = open(args.trainlabel,'r').readlines()
+		training_labels = []
+		for row in tqdm(training_labels_file):
+			if row.attrib['hyperpartisan'] == 'true':
+				training_labels.append(1)
+			else:
+				training_labels.append(0)
 
 	else:
 		print("Provided files extensions do not match. Program is now exiting...")

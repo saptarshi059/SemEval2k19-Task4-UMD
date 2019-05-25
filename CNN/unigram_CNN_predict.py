@@ -34,33 +34,32 @@ parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of
 
 args = parser.parse_args()
 
-input_file_path = args.testfile
 output_file_path = args.outputpath
 
-qualified_name_of_output_file = output_file_path+"/predictions.txt"
+qualified_name_of_output_file = output_file_path + "/predictions.txt"
 
-#Reading in the imput file.
-for filename in os.listdir(input_file_path):
-	if filename.endswith('.xml'):
-		fullname = os.path.join(input_file_path,filename)
-		test_file = objectify.parse(fullname)
+#Reading in the input file.
+test_articles = []
+test_articles_id = []
 
-		root_test_file = test_file.getroot()
+if args.testfile.endswith('.xml'):
+	test_file = objectify.parse(open(args.testfile,encoding = "utf-8"))
+	root_test_file = test_file.getroot()
 
-		test_articles = []
-		test_articles_id = []
+	for i in root_test_file.getchildren():
+		test_articles.append(' '.join(e for e in i.itertext()))
+		test_articles_id.append(i.attrib['id'])
 
-		for i in root_test_file.getchildren():
-			test_articles.append(' '.join(e for e in i.itertext()))
-			test_articles_id.append(i.attrib['id'])
+elif args.testfile.endswith('.txt'):
+	articles = open(args.testfile,'r', encoding="utf-8").readlines()
+	for x in articles:
+		temp = x.split()
+		test_articles.append(' '.join(e for e in temp[1:]))
+		test_articles_id.append(temp[0])
 
-	elif filename.endswith('.txt'):
-		fullname = os.path.join(input_file_path,filename)
-		test_articles = open(fullname,'r', encoding="utf-8").readlines()
-
-	else:
-		print("Invalid File Extension. Program is now exiting...")
-		exit()
+else:
+	print("Invalid File Extension. Program is now exiting...")
+	exit()
 
 #Loading the CNN model.
 model = load_model(args.modelname)
@@ -87,17 +86,9 @@ if not os.path.exists(os.path.dirname(qualified_name_of_output_file)):
 #Writing predictions to the output file in the output directory.
 with open(qualified_name_of_output_file, "w") as f:
 	j = 0 
-	if filename.endswith('.xml'):
-		for prediction in CNN_predictions:
-			if prediction[0] == 0:
-				f.write(test_articles_id[j] + ' ' + 'false' + '\n')
-			else:
-				f.write(test_articles_id[j] + ' ' + 'true' + '\n')
-			j = j + 1
-	else:
-		for prediction in CNN_predictions:
-			if prediction[0] == 0:
-				f.write('false' + '\n')
-			else:
-				f.write('true' + '\n')
-			j = j + 1
+	for prediction in CNN_predictions:
+		if prediction[0] == 0:
+			f.write(test_articles_id[j] + ' ' + 'false' + '\n')
+		else:
+			f.write(test_articles_id[j] + ' ' + 'true' + '\n')
+		j = j + 1
