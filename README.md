@@ -151,3 +151,9 @@ Provided virtual environments have been removed due to portability issues. Now, 
 - Execute programs as usual and exit virtual environment with deactivate.
 
 **Please make sure you are using Python 3.6.x in order for tensorflow to work!**
+
+### Update May 24 2019 ###
+
+2 new programs have been added in the *utilities* folder for working with ".txt" files. "xml_to_txt.py" converts your supplied xml file to the required ".txt" equivalent for use with our programs. "txt_evaluator.py" is used to evaluate the predicitions generated from the ".txt" files. In order to evaluate predictions generated using ".xml" files, use the semeval evaluator script located here https://pan.webis.de/semeval19/semeval19-code/semeval-pan-2019-evaluator.py.
+
+In order to download the official data, you need to request access at https://zenodo.org/record/1489920#.XOisOdNKi9Y.
