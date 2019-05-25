@@ -109,7 +109,7 @@ if exists_train_file and exists_train_label_file:
 		training_labels_file = open(args.trainlabel,'r').readlines()
 		training_labels = []
 		for row in tqdm(training_labels_file):
-			if row.attrib['hyperpartisan'] == 'true':
+			if row == 'true':
 				training_labels.append(1)
 			else:
 				training_labels.append(0)
