@@ -1,4 +1,22 @@
 '''
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author: Saptarshi Sengupta
+Email: ssengupta8@d.umn.edu
+'''
+
+'''
 This program will do the following:
 1. Load the CNN model inside the code i.e. no need to pass it from the command line.
 2. Generate the predictions for the input test file passed from the command line according to the SemEval format.

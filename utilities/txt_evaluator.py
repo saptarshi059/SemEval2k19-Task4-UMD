@@ -1,3 +1,21 @@
+'''
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author: Saptarshi Sengupta
+Email: ssengupta8@d.umn.edu
+'''
+
 from lxml import objectify
 from joblib import load
 import argparse
@@ -20,16 +38,16 @@ parser.add_argument('-pp','--predictionspath', metavar='', type=str, help='Path 
 
 args = parser.parse_args()
 
-gt = open(args.groundtruthpath,"r").readlines()
-pp = open(args.predictionspath,"r").readlines()
+g = open(args.groundtruthpath,"r").readlines()
+p = open(args.predictionspath,"r").readlines()
 
 correct = 0
 
 tp = tn = fp = fn = 0
 
-for i in range(len(gt)):
-	prediction = pp[i].split()[1]
-	ground_truth = gt[i].replace('\n','')
+for i in range(len(g)):
+	prediction = p[i].split()[1]
+	ground_truth = g[i].replace('\n','')
 
 	#Accuracy
 	if prediction == ground_truth:
@@ -47,9 +65,9 @@ for i in range(len(gt)):
 		else:
 			fp += 1
 
-accuracy = (correct/len(gt)) * 100
+accuracy = (correct/len(g)) * 100
 
-print("Accuracy ="+str(round(accuracy,2))+"%")
+print("Accuracy = "+str(round(accuracy,2))+"%")
 print("True Positives =",tp)
 print("False Negatives =",fn)
 print("False Positives =",fp)

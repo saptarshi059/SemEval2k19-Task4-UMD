@@ -1,4 +1,22 @@
 '''
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author: Saptarshi Sengupta
+Email: ssengupta8@d.umn.edu
+'''
+
+'''
 This program will do the following:
 1. Load the ngram model inside the code i.e. no need to pass it from the command line.
 2. Generate the predictions of the input test file passed from the command line according to the SemEval format.
@@ -9,7 +27,9 @@ python3 ngram_LR_predict.py -tf <Path to the test file> -o <Path to the folder t
 Example Usage:
 python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/test/samp_ip/test.xml -o /Users/babun/Desktop/SemEval2k19/data/test/samp_op
 
-python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/data/test.xml -o /Users/babun/Desktop/SemEval2k19/data/custom1/test_data/predictions
+python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/data/test.xml -o /Users/babun/Desktop/SemEval2k19/data/custom/test_data/pred_xml
+
+python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/test_data_txt/test.txt -o /Users/babun/Desktop/SemEval2k19/data/custom/test_data/predictions
 '''
 
 from sklearn.linear_model import LogisticRegression

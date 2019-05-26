@@ -1,4 +1,22 @@
 '''
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Author: Saptarshi Sengupta
+Email: ssengupta8@d.umn.edu
+'''
+
+'''
 Program Name: ngram_LR_train.py
 Author: SAPTARSHI SENGUPTA
 Major: Computer Science / 1st Year / Graduate Student (MS) / University of Minnesota Duluth
@@ -23,7 +41,9 @@ Code Usage: In order to use this program -
 				
 				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
 
-				python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom1/train_data/train_labels.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR
+				python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train_labels.xml
+
+				python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train.txt -tl /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train_labels.txt
 
 Settings Used:  * Unigram features.
 				* Term frequence cutoff 12.
@@ -143,6 +163,7 @@ if exists_train_file and exists_train_label_file:
 
 		print("Reading in the training label file:")
 		training_labels = open(args.trainlabel,'r').readlines()
+		training_labels = [x.replace('\n','') for x in training_labels]
 
 	else:
 		print("Provided files extensions do not match. Program is now exiting...")
