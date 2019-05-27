@@ -29,7 +29,7 @@ python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/test/samp_
 
 python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/data/test.xml -o /Users/babun/Desktop/SemEval2k19/data/custom/test_data/pred_xml
 
-python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/test_data_txt/test.txt -o /Users/babun/Desktop/SemEval2k19/data/custom/test_data/predictions
+python3 ngram_LR_predict.py -tf /Users/babun/Desktop/SemEval2k19/data/custom/test_data/data/test.txt -o /Users/babun/Desktop/SemEval2k19/data/custom/test_data/predictions
 '''
 
 from sklearn.linear_model import LogisticRegression
@@ -40,6 +40,8 @@ import argparse
 import errno
 import sys
 import os
+import ast
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Generate predictions for the supplied test data.')
@@ -63,16 +65,17 @@ if args.testfile.endswith('.xml'):
 	test_file = objectify.parse(open(args.testfile,encoding = "utf-8"))
 	root_test_file = test_file.getroot()
 
-	for i in root_test_file.getchildren():
+	print("Reading in the test file:")
+	for i in tqdm(root_test_file.getchildren()):
 		test_articles.append(' '.join(e for e in i.itertext()))
 		test_articles_id.append(i.attrib['id'])
 
 elif args.testfile.endswith('.txt'):
-	articles = open(args.testfile,'r', encoding="utf-8").readlines()
-	for x in articles:
-		temp = x.split()
-		test_articles.append(' '.join(e for e in temp[1:]))
-		test_articles_id.append(temp[0])
+	print("Reading in the test file:")
+	articles = open(args.testfile,'r', encoding="utf-8")
+	test_articles_total = [ast.literal_eval(line.strip()) for line in articles.readlines()]
+	test_articles_id = [x[0] for x in test_articles_total]
+	test_articles = [x[1] for x in test_articles_total]
 
 else:
 	print("Invalid File Extension. Program is now exiting...")
@@ -88,6 +91,7 @@ lr_clf = load(args.lrmname+".joblib")
 test_vectors = ngram_model.transform(test_articles).toarray()
 	
 #Making Predictions
+print("Making Predictions...")
 lr_predictions = lr_clf.predict(test_vectors)
 
 #If the directory doesn't exist, create a directory.
@@ -101,6 +105,7 @@ if not os.path.exists(os.path.dirname(qualified_name_of_output_file)):
 #Writing predictions to the output file in the output directory.
 with open(qualified_name_of_output_file, "w") as f:
 	j = 0 
+	print("Saving the Predictions...")
 	for prediction in lr_predictions:
 		f.write(test_articles_id[j] + ' ' + prediction + "\n")
 		j = j + 1

@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Author: Saptarshi Sengupta
-Email: ssengupta8@d.umn.edu
+Email: sengu059@d.umn.edu
 '''
 
 from lxml import objectify
@@ -31,43 +31,41 @@ parser.add_argument('-tetr','--testortrain', metavar='', type=int, help='Mode 1 
 args = parser.parse_args()
 
 if args.mode == 1:
-	xml_data_file = objectify.parse(open(args.xmlpath,encoding="utf-8"))
+	xml_data_file = objectify.parse(open(args.xmlpath , encoding="utf-8"))
 	xml_data_file_root = xml_data_file.getroot()
 
 	articles = []
 
-	if args.testortrain == 1:
-		
-		for i in tqdm(xml_data_file_root.getchildren()):
-			articles.append(' '.join(e for e in i.itertext()).replace('\n',' '))
-
-		with open(args.txtpath + "/train.txt", 'w') as fp:
-			fp.write('\n'.join('%s' % x for x in articles))
-
-	else:
-		
-		for i in tqdm(xml_data_file_root.getchildren()):
+	print("Reading in the data file:")
+	for i in tqdm(xml_data_file_root.getchildren()):
 			articles.append((i.attrib['id'],' '.join(e for e in i.itertext()).replace('\n',' ')))
-		
-		with open(args.txtpath + "/test.txt", 'w') as fp:
-			fp.write('\n'.join('%s %s' % x for x in articles))
+
+	if args.testortrain == 1:
+		f = open(args.txtpath + "/train.txt", 'w')
+	else:
+		f = open(args.txtpath + "/test.txt", 'w')
+	
+	print("Generating the converted text file:")
+	for i in articles:
+		f.write(str(i))
+		f.write('\n')
+
+	f.close()
 
 else:
+	xml_label_file = objectify.parse(open(args.xmlpath,encoding="utf-8"))
+	xml_label_file_root = xml_label_file.getroot()
 
-	xml_train_label_file = objectify.parse(open(args.xmlpath,encoding="utf-8"))
-	xml_train_label_file_root = xml_train_label_file.getroot()
+	labels = []
 
-	train_labels = []
+	print("Reading in the label file:")
+	for i in tqdm(xml_label_file_root.getchildren()):
+		labels.append(i.attrib['hyperpartisan'])
 
-	for i in tqdm(xml_train_label_file_root.getchildren()):
-		train_labels.append(i.attrib['hyperpartisan'])
-
+	print("Generating the converted text file:")
 	if args.testortrain == 1:
-
 		with open(args.txtpath + "/train_labels.txt", 'w') as fp:
-			fp.write('\n'.join('%s' % x for x in train_labels))
-
+			fp.write('\n'.join('%s' % x for x in labels))
 	else:
-
 		with open(args.txtpath + "/test_labels.txt", 'w') as fp:
-			fp.write('\n'.join('%s' % x for x in train_labels))		
+			fp.write('\n'.join('%s' % x for x in labels))		

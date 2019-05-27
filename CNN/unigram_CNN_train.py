@@ -80,6 +80,7 @@ from lxml import etree
 from tqdm import tqdm
 import argparse
 import os
+import ast
 
 parser = argparse.ArgumentParser(description='Train and save a CNN model on the supplied Training data')
 
@@ -121,13 +122,15 @@ if exists_train_file and exists_train_label_file:
 
 	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 		print("Reading in the training corpus:")
-		training_data = open(args.train,'r', encoding="utf-8").readlines()
+		training_file = open(args.train,'r', encoding="utf-8")
+		training_data = [ast.literal_eval(line.strip()) for line in training_file.readlines()]
+		training_data = [x[1] for x in training_data]
 
 		print("Reading in the training label file:")
-		training_labels_file = open(args.trainlabel,'r').readlines()
-		training_labels_file = [x.replace('\n','') for x in training_labels_file]
+		training_labels_main = open(args.trainlabel,'r').readlines()
+		training_labels_main = [x.replace('\n','') for x in training_labels_main]
 		training_labels = []
-		for row in tqdm(training_labels_file):
+		for row in tqdm(training_labels_main):
 			if row == 'true':
 				training_labels.append(1)
 			else:

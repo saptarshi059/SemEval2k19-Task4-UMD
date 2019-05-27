@@ -92,6 +92,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import nltk
+import ast
 
 def features_and_weights(calssifier_name, classifier, feature_names,op_file):
 	top_features=len(feature_names)
@@ -159,7 +160,9 @@ if exists_train_file and exists_train_label_file:
 	
 	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 		print("Reading in the training corpus:")
-		training_data = open(args.train,'r', encoding="utf-8").readlines()
+		training_file = open(args.train,'r', encoding="utf-8")
+		training_data = [ast.literal_eval(line.strip()) for line in training_file.readlines()]
+		training_data = [x[1] for x in training_data]
 
 		print("Reading in the training label file:")
 		training_labels = open(args.trainlabel,'r').readlines()

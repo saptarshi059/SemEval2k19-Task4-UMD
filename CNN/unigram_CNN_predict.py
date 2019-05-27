@@ -42,6 +42,7 @@ import argparse
 import errno
 import sys
 import os
+import ast
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
@@ -69,11 +70,11 @@ if args.testfile.endswith('.xml'):
 		test_articles_id.append(i.attrib['id'])
 
 elif args.testfile.endswith('.txt'):
-	articles = open(args.testfile,'r', encoding="utf-8").readlines()
-	for x in articles:
-		temp = x.split()
-		test_articles.append(' '.join(e for e in temp[1:]))
-		test_articles_id.append(temp[0])
+	print("Reading in the test file:")
+	articles = open(args.testfile,'r', encoding="utf-8")
+	test_articles_total = [ast.literal_eval(line.strip()) for line in articles.readlines()]
+	test_articles_id = [x[0] for x in test_articles_total]
+	test_articles = [x[1] for x in test_articles_total]
 
 else:
 	print("Invalid File Extension. Program is now exiting...")

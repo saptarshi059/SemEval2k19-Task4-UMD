@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Author: Saptarshi Sengupta
-Email: ssengupta8@d.umn.edu
+Email: sengu059@d.umn.edu
 '''
 
 from lxml import objectify
