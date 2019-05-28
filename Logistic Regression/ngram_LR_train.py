@@ -158,13 +158,12 @@ if exists_train_file and exists_train_label_file:
 	
 	elif args.train.endswith('.txt') and args.trainlabel.endswith('.txt'):
 		print("Reading in the training corpus:")
-		training_file = open(args.train,'r', encoding="utf-8")
-		training_data = [ast.literal_eval(line.strip()) for line in training_file.readlines()]
-		training_data = [x[1] for x in training_data]
+		training_data_file = open(args.train,'r', encoding="utf-8")
+		training_data = [ast.literal_eval(line.strip())[1] for line in training_data_file.readlines()]
 
 		print("Reading in the training label file:")
-		training_labels = open(args.trainlabel,'r').readlines()
-		training_labels = [x.replace('\n','') for x in training_labels]
+		training_labels_file = open(args.trainlabel,'r')
+		training_labels = [ast.literal_eval(line.strip())[1] for line in training_labels_file.readlines()]
 
 	else:
 		print("Provided files extensions do not match. Program is now exiting...")
