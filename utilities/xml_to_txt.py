@@ -26,7 +26,7 @@ parser = argparse.ArgumentParser(description='Utility program to convert supplie
 parser.add_argument('-xp','--xmlpath', metavar='', type=str, help='Path to the training file (.xml).' , required = True)
 parser.add_argument('-tp','--txtpath', metavar='', type=str, help='Path to the folder where the converted training file (.txt) will be saved.', required = True)
 parser.add_argument('-m','--mode', metavar='', type=int, help='Mode 1 = Convert data file; Mode 2 = Convert label file.', choices=[1,2], required = True)
-parser.add_argument('-tetr','--testortrain', metavar='', type=int, help='Mode 1 = Convert train file; Mode 2 = Convert test file.', choices=[1,2], required = True)
+parser.add_argument('-tetr','--testortrain', metavar='', type=int, help='tetr 1 = Convert train file; tetr 2 = Convert test file.', choices=[1,2], required = True)
 
 args = parser.parse_args()
 
