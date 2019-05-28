@@ -81,7 +81,7 @@ In order to execute the programs, one needs to create their own virtual environm
 
 **Please make sure you are using Python 3.6.x in order for tensorflow to work!**
 
-[Change Log](CHANGELOG.md)
+[Change Log.](CHANGELOG.md)
 
 ---
 
@@ -89,4 +89,4 @@ In order to execute the programs, one needs to create their own virtual environm
 
 © Saptarshi Sengupta & Ted Pedersen, University of Minnesota Duluth
 
-Licensed under the [GNU GENERAL PUBLIC LICENSE v3](LICENSE)
+Licensed under the [GNU GENERAL PUBLIC LICENSE v3.](LICENSE)

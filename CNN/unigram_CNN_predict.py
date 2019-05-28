@@ -46,8 +46,8 @@ import ast
 
 parser = argparse.ArgumentParser(description='Create TDM matrix and Training Vectors for the supplied Training file')
 
-parser.add_argument('-tf','--testfile', metavar='', type=str, help='Path to the test file (XML).' , required = True)
-parser.add_argument('-o','--outputpath', metavar='', type=str, help='Path to which the predictions file will be written.', required = True)
+parser.add_argument('-tf','--testfile', metavar='', type=str, help='Path to the test file(.xml/.txt)' , required = True)
+parser.add_argument('-o','--outputpath', metavar='', type=str, help='Path to the folder in which the predictions file(.txt) will be saved.', required = True)
 parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', default='myCNN')
 parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer', default='mytokenizer')
 

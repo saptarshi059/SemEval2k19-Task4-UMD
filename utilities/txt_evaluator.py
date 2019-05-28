@@ -34,8 +34,8 @@ def save_to_file(filename):
 
 parser = argparse.ArgumentParser(description="Prediction Evaluator for .txt formatted files.")
 
-parser.add_argument('-gp','--groundtruthpath', metavar='', type=str, help='Path to the Ground Truth File.' , required = True)
-parser.add_argument('-pp','--predictionspath', metavar='', type=str, help='Path to the Predictions File.', required = True)
+parser.add_argument('-gp','--groundtruthpath', metavar='', type=str, help='Path to the Ground Truth File or test labels(.txt)' , required = True)
+parser.add_argument('-pp','--predictionspath', metavar='', type=str, help='Path to the Predictions File(.txt)', required = True)
 
 args = parser.parse_args()
 

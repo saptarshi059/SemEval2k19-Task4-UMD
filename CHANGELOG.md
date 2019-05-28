@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.0.9 - May 27 2019
+
+Comments in each file have been updated to reflect the inclusion of ".txt" files as input.
+Programs in *all_approaches & results* still use ".xml" as input only. Future work entails development on those programs.
+
 ## v1.0.8 - May 26 2019
 
 **Bug Fix**

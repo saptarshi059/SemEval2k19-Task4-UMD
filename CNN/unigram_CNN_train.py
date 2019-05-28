@@ -40,10 +40,6 @@ Code Usage: In order to use this program -
 				
 				* The user should type the following command in either command prompt or linux shell i.e. 
 				  				python unigram_CNN_train.py -t <path to training data file> -tl <path to training data's label file> -mn <Name of the saved CNN model> -tn <Name of the saved tokenizer>
-
-			    In the above prompt, 
-
-				* The training file and its corresponding labels file MUST be in XML format for the program to work.
 				
 				* An example usage would be of the form: python unigram_CNN_train.py --train articles-training-byarticle-20181122.xml --trainlabel ground-truth-training-byarticle-20181122.xml -mn myCNN -tn mytokenizer
 
@@ -58,7 +54,7 @@ Program Algorithm: The program has the following underlying logic -
 				
 				//Main Program Logic
 
-				1. At first, the XML training file is parsed so as to retrieve each article which in turn is stored in memory as a python list. The same takes place for the training labels file.
+				1. At first, the training file is parsed so as to retrieve each article which in turn is stored in memory as a python list. The same takes place for the training labels file.
 
 				2. All the preprocessing steps are carried out.
 
@@ -84,8 +80,8 @@ import ast
 
 parser = argparse.ArgumentParser(description='Train and save a CNN model on the supplied Training data')
 
-parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file (XML).' , required = True)
-parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels (XML).', required = True)
+parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file(.xml/.txt)' , required = True)
+parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels(.xml/.txt)', required = True)
 parser.add_argument('-mn','--modelname', metavar='', type=str, help='Name of the saved CNN model', default='myCNN')
 parser.add_argument('-tn','--tokenizername', metavar='', type=str, help='Name of the saved tokenizer', default='mytokenizer')
 

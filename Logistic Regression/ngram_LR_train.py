@@ -31,15 +31,13 @@ Code Usage: In order to use this program -
 
 			    In the above prompt, 
 
-				* The training file and its corresponding labels file MUST be in XML format for the program to work.
-
-				* 'ngr' is used to specify the range of ngram features wanted. If only one kind of ngram features are desired, for ex, only unigrams, then m = n i.e. '1 1' should be provided. If we want a combination of unigrams and bigrams, [m,n] = [1,2] should be specified etc.
+				* 'ngr' is used to specify the range of ngram features wanted. By default, only unigram features are used. If we want a combination of unigrams and bigrams, [m,n] = [1,2] should be specified etc.
 
 				* 'cutoff' is used to select those features which have a term frequency HIGHER than this value.
 
 				* 'oh' specifies whether we want our vectors to be 'one hot encoded' or not. If yes, include this parameter else do not.
 				
-				* An example usage would be of the form: python ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
+				* An example usage would be of the form: python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml -tl /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 -tdmn TDM -lrmn LR -fw Y
 
 				python3 ngram_LR_train.py -t /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train.xml -tl /Users/babun/Desktop/SemEval2k19/data/custom/train_data/train_labels.xml
 
@@ -60,7 +58,7 @@ Program Algorithm: The program has the following underlying logic -
 
 				//Main Program Logic
 
-				1. At first, the XML training file is parsed so as to retrieve each article which in turn is stored in memory as a python list. The same takes place for the training labels file.
+				1. At first, the training file is parsed so as to retrieve each article which in turn is stored in memory as a python list. The same takes place for the training labels file.
 
 				2. The vectorizer is trained on all of these articles and generates a set of count vectors. This is the TDM, where each row indicates a document and each column, a term from the vocabulary (the vectorizer computes a vocabulary of terms automatically for the entire corpus). Each cell of the TDM contains the frequency (count) of a term in a given document.
 				
@@ -118,8 +116,8 @@ def features_and_weights(calssifier_name, classifier, feature_names,op_file):
 
 parser = argparse.ArgumentParser(description='Build TDM matrix and LR classifier for the supplied Training file')
 
-parser.add_argument('-t','--train', metavar='', type=str, help='Path to training file.', required=True)
-parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to training files labels.', required=True)
+parser.add_argument('-t','--train', metavar='', type=str, help='Path to the training file(.xml/.txt)', required=True)
+parser.add_argument('-tl','--trainlabel', metavar='', type=str, help='Path to the training files labels(.xml/.txt)', required=True)
 parser.add_argument('-ngr', '--ngrange' ,metavar='', nargs=2 ,type=int, help='Types of ngrams wanted as features: ex. for unigrams enter 1 1, unigrams and bigrams enter 1 2 etc.', default=[1,1])
 parser.add_argument('-c','--cutoff', metavar='', type=int, help='Select only those features which have frequency higher than this value.', default=12)
 parser.add_argument('-oh','--onehot' , action='store_true', help='Whether or not you want the vectors to be one hot encoded. If yes, set/include this argument in the command line argument list else leave it.')
