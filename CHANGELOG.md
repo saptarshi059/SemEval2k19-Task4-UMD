@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.0.10 - May 28 2019
+
+**Bug Fix**
+- An issue with the reading of the training labels in the training programs and subsequent use in the predictor programs has been fixed.
+
 ## v1.0.9 - May 27 2019
 
 Comments in each file have been updated to reflect the inclusion of ".txt" files as input.
