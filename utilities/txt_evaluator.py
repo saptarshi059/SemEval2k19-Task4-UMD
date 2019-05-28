@@ -19,6 +19,7 @@ Email: sengu059@d.umn.edu
 from lxml import objectify
 from joblib import load
 import argparse
+import ast
 
 def save_to_file(filename):
 	with open(filename, "w") as f:
@@ -38,16 +39,20 @@ parser.add_argument('-pp','--predictionspath', metavar='', type=str, help='Path 
 
 args = parser.parse_args()
 
-g = open(args.groundtruthpath,"r").readlines()
+g = open(args.groundtruthpath,"r")
+g_total = [ast.literal_eval(line.strip()) for line in g.readlines()]
+g = [x[1] for x in g_total]
+
 p = open(args.predictionspath,"r").readlines()
+p = [x.split()[1] for x in p]
 
 correct = 0
 
 tp = tn = fp = fn = 0
 
 for i in range(len(g)):
-	prediction = p[i].split()[1]
-	ground_truth = g[i].replace('\n','')
+	prediction = p[i]
+	ground_truth = g[i]
 
 	#Accuracy
 	if prediction == ground_truth:

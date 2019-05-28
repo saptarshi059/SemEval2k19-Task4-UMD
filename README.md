@@ -12,13 +12,6 @@ As far as the task was concerned, each team had to come up with a model to detec
 
 Our team submitted 2 models viz. a logistic regression classifier trained on unigrams having a term frequency greater than 12 and a CNN trained on word embeddings.
 
-The repository is organized in the following manner.
-1. The *Final_TIRA_Programs-CNN* directory contains the programs for our CNN model.
-2. The *Final_TIRA_Programs-Logistic Regression* directory contains the programs for our Logistic Regression model.
-3. The *all_approaches & results* directory contains code for each approach that was attempted for the task.
-
-Each program in the first 2 directories is documented/commented such that it explains what the program is doing and provides instructions on running it. **Code in the 3rd directory will be updated with comments shortly but the process of running them is almost the same as those in the final directories.**
-
 ### A note on the programs ###
 
 All of the programs found in this repo have been written with the *articles-training-byarticle-20181122.xml* dataset in mind. While the code can be extended to include a wider range of datasets viz. *articles-training-bypublisher-20181122.xml*, we had 2 reasons for using the former,
@@ -29,8 +22,6 @@ All of the programs found in this repo have been written with the *articles-trai
 Thus we chose to try our programs on the *byarticle* data only. **Future versions of the code will have the capability of handling larger sized training data**
 
 As we didn't have access to the final test data (which would be released after all the submissions were made), we had to find a way to understand how well our approaches would work on it. Thus, we decided to run each program with a ***10-fold cross-validation*** technique. In this way, we got hints about the final performance of our methods and in turn it helped us select the two models which we would be submitting for the task.
-
-**All Programs were written using Python 2.7. Please run them accordingly!**
 
 ### Motivation for each approach ###
 
@@ -79,71 +70,9 @@ As we didn't have access to the final test data (which would be released after a
 
 	The last approach was based on analyzing an article's non-textual characteristics. The thought behind this approach was that since hyperpartisan news is more polarized etc., it needs more "flair" to convey its message. Mainstream news on the other hand can make its point with conviction without the need for such cues because its content is inherently true. Thus, we decided to see whether the number of images an article had could be used as a distinguishing factor or not. Unfortunately, this idea did not pan out the way we imagined. Accuracy scores for some of the classifiers were not even greater than the majority classifier. This could mean the following; the data did not reflect the idea proposed or other kinds of such features are required to engineer a better feature vector. Either way, we still need to look for such cues because we feel that the basic idea still has some merit to it. We feel that the next step to take would be to see whether we can use counts of images instead of a binary representation to improve accuracy.
 
+### Usage Instructions ###
 
-### Update 29th November 2018 ###
-
-There are 3 files, the 'generate_vectors.py' and 'generate_sentiment_vectors.py' are used to create unigram/image presence and sentiment vectors respectively. The 'classify.py' is used for training and testing the SVM, Gaussian NB and Decision Tree classifiers.
-
-There are no output files for the last one as the results are displayed directly in the terminal. For the first 2, the results are stored as '.csv' files. In order to run the classification program, the 2 output files from the first 2 programs are manually merged into files called 'train.csv' and 'test.csv'.
-
-The first few lines of each program are commented out. They are simply the command line arguments I used to run the program. You can change it accordingly to where you have kept your files.
-
-### Update 17th January 2019 ###
-
-The repository has been cleaned and the only folder which is of importance as far as SemEval is concerned is the *Final_TIRA_Programs*. These programs were designed for use with the *TIRA* system. This folder holds the programs for the two approaches we selected for the competition. One of the them is a logistic regression classifier trained on a unigram model. Although the program is called *ngram_LR_train* etc., we use only unigrams as features. The name was so given because the program is capable of handling n(>1)gram features. The other is a CNN trained on a unigram/embedding model obtained from the supplied training data.
-
-The folder named *all_approaches* contains programs for all the approaches we tried for the problem. All of them are fully functional. However, they are not formatted according to the SemEval standards. Running them is fairly simple if one looks at the help menu obtained from the command line using the '-h' flag. These programs were mostly based on a kfold cross-validation technique and were written with the *articles-training-byarticle-20181122.xml* dataset (https://zenodo.org/record/1489920) in mind.
-
-The **ENTIRE** list of dependencies which are required to run *all* the programs are as follows:
-- **Python**
-- **NumPy**
-- **scikit-learn**
-- **SciPy**
-- **Tensorflow**
-- **Keras**
-- **tqdm**
-- **lxml**
-- **argpars**
-- Gensim
-- Six
-- smart_open
-- NLTK
-- TextBlob
-- CSV
-- re
-- Matplotlib (optional)
-
-In order to run the programs in *Final_TIRA_Programs*, one needs to only have the **first 9 dependencies** installed.
-
-### Update 19th January 2019 ###
-
-Each final approach (previously located in the *Final_TIRA_Programs* folder), now has its own directory. Located within each directory is a *setup.py* program which will install all the dependencies required to run that particular approach. In order to use it, run *python setup.py install*. Thus, the only prerequisite now is having the python compiler installed.
-
-### Update 3rd February 2019 ###
-
-Programs in the *all_approaches & results* folder have been updated with comments.
-
-### Update April 27 2019 ###
-
-Support for using text files have been added. They are to be supplied to the program in the same manner as .xml files. Ability to see features and their corresponding weights from the Logistic Regression approach has been added. However, in order to use the LR program now, use *COLUMNS=81* followed by the rest of the command line arguments. This is required now because of the way *argparse* works when the number of command line options are many.
-
-### Update May 15 2019 ###
-
-**Main programs have been updated to work with Python 3**. Setup scripts have been removed and have been replaced with virtual environments. Please run the programs in *Logistic Regression* and *CNN* by using their respective virtual environments. In order to use the programs now, enter the following commands:
-
-- source \path\to\virtual\environment\bin\activate
-- pip install -r requirements.txt
-- run programs as usual.
-
-Once you are done with the enironment, enter *deactivate* in the prompt to exit.
-
-There is no need to set the *COLUMNS* environment variable now as that has been taken care of within the code.
-
-License (GPLv3) to the code has been added.
-
-### Update May 17 2019 ###
-
-Provided virtual environments have been removed due to portability issues. Now, in order to execute the programs, one needs to create their own virtual environment. The steps are as follows:
+In order to execute the programs, one needs to create their own virtual environment. The steps are as follows:
 
 - virtualenv -p python3 [environment_name] \(for unix based systems) || virtualenv [environment_name] \(for windows)
 - source \path\to\virtual\environment\bin\activate (or activate.csh depending on how your system works) \(for unix based systems) || \path\to\virtual\environment\Scripts\activate \(for windows)
@@ -152,12 +81,12 @@ Provided virtual environments have been removed due to portability issues. Now, 
 
 **Please make sure you are using Python 3.6.x in order for tensorflow to work!**
 
-### Update May 24 2019 ###
+[Change Log](CHANGELOG.md)
 
-2 new programs have been added in the *utilities* folder for working with ".txt" files. "xml_to_txt.py" converts your supplied xml file to the required ".txt" equivalent for use with our programs. "txt_evaluator.py" is used to evaluate the predicitions generated from the ".txt" files. In order to evaluate predictions generated using ".xml" files, use the semeval evaluator script located here https://pan.webis.de/semeval19/semeval19-code/semeval-pan-2019-evaluator.py.
+---
 
-In order to download the official data, you need to request access at https://zenodo.org/record/1489920#.XOisOdNKi9Y.
+## License & Copyright
 
-### Update May 26 2019 ###
+© Saptarshi Sengupta & Ted Pedersen, University of Minnesota Duluth
 
-A bug with the reading of the training labels in the training programs has been fixed. All programs have been updated with license information.
+Licensed under the [GNU GENERAL PUBLIC LICENSE v3](LICENSE)

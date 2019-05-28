@@ -45,7 +45,7 @@ if args.mode == 1:
 	else:
 		f = open(args.txtpath + "/test.txt", 'w')
 	
-	print("Generating the converted text file:")
+	print("Generating the converted text file...")
 	for i in articles:
 		f.write(str(i))
 		f.write('\n')
@@ -58,14 +58,18 @@ else:
 
 	labels = []
 
-	print("Reading in the label file:")
+	print("Reading in the data file:")
 	for i in tqdm(xml_label_file_root.getchildren()):
-		labels.append(i.attrib['hyperpartisan'])
+			labels.append((i.attrib['id'],i.attrib['hyperpartisan']))
 
-	print("Generating the converted text file:")
 	if args.testortrain == 1:
-		with open(args.txtpath + "/train_labels.txt", 'w') as fp:
-			fp.write('\n'.join('%s' % x for x in labels))
+		f = open(args.txtpath + "/train_labels.txt", 'w')
 	else:
-		with open(args.txtpath + "/test_labels.txt", 'w') as fp:
-			fp.write('\n'.join('%s' % x for x in labels))		
+		f = open(args.txtpath + "/test_labels.txt", 'w')
+	
+	print("Generating the converted text file...")
+	for i in labels:
+		f.write(str(i))
+		f.write('\n')
+
+	f.close()		
