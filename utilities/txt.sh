@@ -19,49 +19,52 @@ Email: sengu059@d.umn.edu
 
 echo "This is a complete run of the txt version of the LR program."
 
-#convert training, test data/labels and create their corresponding txt files.
+#convert training & test data/labels and create their corresponding txt files.
 
-TRAIN_DATA=~/Desktop/SemEval2k19/data/custom/train_data/train.xml
-TRAIN_LABEL=~/Desktop/SemEval2k19/data/custom/train_data/train_labels.xml
-Train_Output_Path=~/Desktop/SemEval2k19/data/custom/train_data/
+TRAIN_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
+TRAIN_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/ground-truth-training-byarticle-20181122.xml
+Train_Data_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/data/
+Train_Label_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/labels
 
-TEST_DATA=~/Desktop/SemEval2k19/data/custom/test_data/data/test.xml
-TEST_LABEL=~/Desktop/SemEval2k19/data/custom/test_data/ground_truth/test_labels.xml
-Test_Data_Output_Path=~/Desktop/SemEval2k19/data/custom/test_data/data/
-Test_Label_Output_Path=~/Desktop/SemEval2k19/data/custom/test_data/ground_truth/
+TEST_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
+TEST_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/ground-truth-training-byarticle-20181122.xml
+Test_Data_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/data/
+Test_Label_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/labels/
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Output_Path -m 1 -tetr 1"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Output_Path -m 1 -tetr 1
+CODEHOME=/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Output_Path -m 2 -tetr 1"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Output_Path -m 2 -tetr 1
+echo "python3 xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Output_Path -m 1 -tetr 1"
+python3 $CODEHOME/utilities/xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Data_Output_Path -m 1 -tetr 1
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2
+echo "python3 xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Output_Path -m 2 -tetr 1"
+python3 $CODEHOME/utilities/xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Label_Output_Path -m 2 -tetr 1
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2
+echo "python3 xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2"
+python3 $CODEHOME/utilities/xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2
+
+echo "python3 xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2"
+python3 $CODEHOME/utilities/xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2
 
 #Train LR classifier.
 
-TRAIN_DATA=~/Desktop/SemEval2k19/data/custom/train_data/train.txt
-TRAIN_LABEL=~/Desktop/SemEval2k19/data/custom/train_data/train_labels.txt
+TRAIN_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/train.txt
+TRAIN_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/train_labels.txt
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
+echo "python3 ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL"
+python3 $CODEHOME/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
 
 #Generate Predictions.
 
-TEST_DATA=~/Desktop/SemEval2k19/data/custom/test_data/data/test.txt
-PREDICTIONS_PATH=~/Desktop/SemEval2k19/data/custom/test_data/predictions/
+TEST_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/test.txt
+PREDICTIONS_DIRECTORY_PATH=~/Desktop/SemEval2k19/data/train_byarticle/predictions/
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH
+echo "python3 ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH"
+python3 $CODEHOME/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_DIRECTORY_PATH
 
 #Evaulate Predictions.
 
-TEST_LABEL=~/Desktop/SemEval2k19/data/custom/test_data/ground_truth/test_labels.txt
-PREDICTIONS_PATH=~/Desktop/SemEval2k19/data/custom/test_data/predictions/predictions.txt
+TEST_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/test_labels.txt
+PREDICTIONS_FILE_PATH=~/Desktop/SemEval2k19/data/train_byarticle/predictions/predictions.txt
 
-echo "/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_PATH"
-python3 /Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/utilities/txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_PATH
+echo "python3 txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_PATH"
+python3 $CODEHOME/utilities/txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_FILE_PATH
