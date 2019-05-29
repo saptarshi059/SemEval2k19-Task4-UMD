@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Author: Saptarshi Sengupta
-Email: ssengupta8@d.umn.edu
+Email: sengu059@d.umn.edu
 '''
 
 #python ngram.py --data /Users/babun/Desktop/SemEval2k19/data/train_byarticle/articles-training-byarticle-20181122.xml --datalabel /Users/babun/Desktop/SemEval2k19/data/train_byarticle/ground-truth-training-byarticle-20181122.xml --ngrange 1 1 --cutoff 12 > unigram_cutoff12.txt ....best performance for LR with 77%!

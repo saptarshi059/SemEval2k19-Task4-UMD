@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.0.11 - May 29 2019
+
+2 shell scripts have been added to the utilities folder which demonstrates how to run the programs completely from conversion to txt to evaluation. Before runnign the scripts, make sure you enter *chmod 700 <\name of the script>* in the terminal. Also, change the files paths according to where the data is located on your machine.
+
 ## v1.0.10 - May 28 2019
 
 **Bug Fix**
