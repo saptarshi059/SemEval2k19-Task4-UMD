@@ -87,6 +87,6 @@ In order to execute the programs, one needs to create their own virtual environm
 
 ## License & Copyright
 
-© Saptarshi Sengupta & Ted Pedersen, University of Minnesota Duluth
+© Saptarshi Sengupta & Ted Pedersen, University of Minnesota Duluth.
 
 Licensed under the [GNU GENERAL PUBLIC LICENSE v3.](LICENSE)
