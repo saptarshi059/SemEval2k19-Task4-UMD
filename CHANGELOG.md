@@ -6,6 +6,8 @@
 
 - Updated the shell scripts to use the original ByArticle training data from the task.
 
+- Made the shell scripts easier to use. Fewer file paths need to be supplied now to execute the scripts.
+
 ## v1.0.10 - May 28 2019
 
 **Bug Fix**

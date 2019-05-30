@@ -19,52 +19,55 @@ Email: sengu059@d.umn.edu
 
 echo "This is a complete run of the txt version of the LR program."
 
-#convert training & test data/labels and create their corresponding txt files.
+#You just need to modify these 2 variables according to where the files are located on your system.
 
-TRAIN_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
-TRAIN_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/ground-truth-training-byarticle-20181122.xml
-Train_Data_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/data/
-Train_Label_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/labels
+DATA_HOME=~/Desktop/SemEval2k19/data/train_byarticle/
+CODE_HOME=~/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/
 
-TEST_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
-TEST_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/ground-truth-training-byarticle-20181122.xml
-Test_Data_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/data/
-Test_Label_Output_Path=~/Desktop/SemEval2k19/data/train_byarticle/labels/
+#Convert training & test data/labels and create their corresponding txt files.
 
-CODEHOME=/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/
+TRAIN_DATA=$DATA_HOME/articles-training-byarticle-20181122.xml
+TRAIN_LABEL=$DATA_HOME/ground-truth-training-byarticle-20181122.xml
+Train_Data_Output_Path=$DATA_HOME
+Train_Label_Output_Path=$DATA_HOME
+
+TEST_DATA=$TRAIN_DATA
+TEST_LABEL=$TRAIN_LABEL
+Test_Data_Output_Path=$Train_Data_Output_Path
+Test_Label_Output_Path=$Train_Label_Output_Path
 
 echo "python3 xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Output_Path -m 1 -tetr 1"
-python3 $CODEHOME/utilities/xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Data_Output_Path -m 1 -tetr 1
+python3 $CODE_HOME/utilities/xml_to_txt.py -xp $TRAIN_DATA -tp $Train_Data_Output_Path -m 1 -tetr 1
 
 echo "python3 xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Output_Path -m 2 -tetr 1"
-python3 $CODEHOME/utilities/xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Label_Output_Path -m 2 -tetr 1
+python3 $CODE_HOME/utilities/xml_to_txt.py -xp $TRAIN_LABEL -tp $Train_Label_Output_Path -m 2 -tetr 1
 
 echo "python3 xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2"
-python3 $CODEHOME/utilities/xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2
+python3 $CODE_HOME/utilities/xml_to_txt.py -xp $TEST_DATA -tp $Test_Data_Output_Path -m 1 -tetr 2
 
 echo "python3 xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2"
-python3 $CODEHOME/utilities/xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2
+python3 $CODE_HOME/utilities/xml_to_txt.py -xp $TEST_LABEL -tp $Test_Label_Output_Path -m 2 -tetr 2
 
 #Train LR classifier.
 
-TRAIN_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/train.txt
-TRAIN_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/train_labels.txt
+TRAIN_DATA=$DATA_HOME/train.txt
+TRAIN_LABEL=$DATA_HOME/train_labels.txt
 
 echo "python3 ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL"
-python3 $CODEHOME/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
+python3 $CODE_HOME/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
 
 #Generate Predictions.
 
-TEST_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/test.txt
-PREDICTIONS_DIRECTORY_PATH=~/Desktop/SemEval2k19/data/train_byarticle/predictions/
+TEST_DATA=$DATA_HOME/test.txt
+PREDICTIONS_DIRECTORY_PATH=$DATA_HOME/predictions/
 
 echo "python3 ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH"
-python3 $CODEHOME/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_DIRECTORY_PATH
+python3 $CODE_HOME/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_DIRECTORY_PATH
 
-#Evaulate Predictions.
+#Evaluate Predictions.
 
-TEST_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/test_labels.txt
-PREDICTIONS_FILE_PATH=~/Desktop/SemEval2k19/data/train_byarticle/predictions/predictions.txt
+TEST_LABEL=$DATA_HOME/test_labels.txt
+PREDICTIONS_FILE_PATH=$DATA_HOME/predictions/predictions.txt
 
 echo "python3 txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_PATH"
-python3 $CODEHOME/utilities/txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_FILE_PATH
+python3 $CODE_HOME/utilities/txt_evaluator.py -gp $TEST_LABEL -pp $PREDICTIONS_FILE_PATH

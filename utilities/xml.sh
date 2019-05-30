@@ -19,27 +19,29 @@ Email: sengu059@d.umn.edu
 
 echo "This is a complete run of the xml version of the LR program."
 
+#You just need to modify these 3 variables according to where the files are located on your system.
+
+CODE_HOME=/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/
+DATA_HOME=~/Desktop/SemEval2k19/data/train_byarticle/
+TEST_LABEL_DIRECTORY=$DATA_HOME/labels/
+
 #Train LR classifier.
 
-TRAIN_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
-TRAIN_LABEL=~/Desktop/SemEval2k19/data/train_byarticle/labels/ground-truth-training-byarticle-20181122.xml
-
-CODEHOME=/Users/babun/Desktop/SemEval2k19/programs/SemEval2k19-Task4-UMD/
+TRAIN_DATA=$DATA_HOME/articles-training-byarticle-20181122.xml
+TRAIN_LABEL=$DATA_HOME/ground-truth-training-byarticle-20181122.xml
 
 echo "python3 ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL"
-python3 $CODEHOME/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
+python3 $CODE_HOME/Logistic\ Regression/ngram_LR_train.py -t $TRAIN_DATA -tl $TRAIN_LABEL
 
 #Generate Predictions.
 
-TEST_DATA=~/Desktop/SemEval2k19/data/train_byarticle/data/articles-training-byarticle-20181122.xml
-PREDICTIONS_PATH=~/Desktop/SemEval2k19/data/custom/test_data/predictions/
+TEST_DATA=$TRAIN_DATA
+PREDICTIONS_PATH=$DATA_HOME/predictions/
 
 echo "python3 ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH"
-python3 $CODEHOME/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH
+python3 $CODE_HOME/Logistic\ Regression/ngram_LR_predict.py -tf $TEST_DATA -o $PREDICTIONS_PATH
 
-#Evaulate Predictions.
-
-TEST_LABEL_DIRECTORY=~/Desktop/SemEval2k19/data/train_byarticle/labels/
+#Evaluate Predictions.
 
 echo "python3 semeval-pan-2019-evaluator.py -d $TEST_LABEL_DIRECTORY -r $PREDICTIONS_PATH -o $PREDICTIONS_PATH"
-python3 $CODEHOME/utilities/semeval-pan-2019-evaluator.py -d $TEST_LABEL_DIRECTORY -r $PREDICTIONS_PATH -o $PREDICTIONS_PATH
+python3 $CODE_HOME/utilities/semeval-pan-2019-evaluator.py -d $TEST_LABEL_DIRECTORY -r $PREDICTIONS_PATH -o $PREDICTIONS_PATH
