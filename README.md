@@ -14,6 +14,8 @@ Our team submitted 2 models viz. a logistic regression classifier trained on uni
 
 ### A note on the programs ###
 
+In order to download the official data, you need to request access at https://zenodo.org/record/1489920#.XOisOdNKi9Y.
+
 All of the programs found in this repo have been written with the *articles-training-byarticle-20181122.xml* dataset in mind. While the code can be extended to include a wider range of datasets viz. *articles-training-bypublisher-20181122.xml*, we had 2 reasons for using the former,
 
 1. The final test data used for the competition (for determining the winner) was similar to the *articles-training-byarticle-20181122.xml* dataset.
